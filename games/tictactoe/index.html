@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tic Tac Toe – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play Tic Tac Toe free online against the computer at Ductgames. Classic 3×3 X and O game — no download, no sign-up required." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/tictactoe/" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
+  <style>
+    /* Game-specific micro styles */
+    .ttt-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .score-cards {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+    }
+    .score-card {
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      min-width: 90px;
+      transition: var(--transition);
+    }
+    .score-card.active {
+      border-color: var(--primary);
+      background: rgba(108,60,225,0.05);
+    }
+    .score-card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .score-card .value { font-size: 1.7rem; font-weight: 900; color: var(--primary); line-height: 1.2; }
+    .score-card.draw-card .value { color: #F59E0B; }
+    .score-card.computer-card .value { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo" aria-label="Back to Ductgames Home">
+      <img src="../../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="../../index.html" class="nav-link">All Games</a>
+      <a href="../../index.html?cat=puzzle" class="nav-link active">Puzzle</a>
+      <a href="../../index.html?cat=arcade" class="nav-link">Arcade</a>
+      <a href="../../index.html?cat=strategy" class="nav-link">Strategy</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+    <div class="header-actions">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="../../index.html" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="../../index.html?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Tic Tac Toe</span>
+          <meta itemprop="position" content="3" />
+        </li>
+      </ol>
+    </nav>
+
+    <!-- ─── GAME LAYOUT ─── -->
+    <div class="game-page-layout">
+
+
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">Tic Tac Toe</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator" id="player-indicator" aria-live="polite">
+                <div class="player-dot" id="player-dot"></div>
+                <span id="turn-label">Your Turn (X)</span>
+              </div>
+              <div class="score-display" id="score-display" aria-live="polite">Score: 0 — 0</div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards" aria-label="Current scores">
+            <div class="score-card active" id="score-you-card">
+              <div class="label">You (X)</div>
+              <div class="value" id="score-you">0</div>
+            </div>
+            <div class="score-card draw-card" id="score-draw-card">
+              <div class="label">Draws</div>
+              <div class="value" id="score-draws">0</div>
+            </div>
+            <div class="score-card computer-card" id="score-ai-card">
+              <div class="label">Computer (O)</div>
+              <div class="value" id="score-ai">0</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive">
+            Your turn! Click a cell to play.
+          </div>
+
+          <!-- Board -->
+          <div class="ttt-wrapper">
+            <div class="ttt-board" id="ttt-board" role="grid" aria-label="Tic Tac Toe Board">
+              <!-- 9 cells rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="Reset game">
+              🔄 New Game
+            </button>
+            <button class="btn-secondary" id="difficulty-btn" aria-label="Toggle difficulty" style="padding:12px 24px; border-radius:50px; font-size:0.92rem;">
+              🤖 AI: Hard
+            </button>
+          </div>
+
+          <!-- Ad below game -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <!-- Google AdSense 728x90 -->
+            <span>Advertisement</span>
+          </div>
+
+          <!-- Game Description for SEO -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About Tic Tac Toe</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">Tic Tac Toe (also known as Noughts and Crosses) is one of the world's most beloved classic strategy games. Play as <strong>X</strong> against our <strong>AI computer opponent</strong> that uses a minimax algorithm to challenge you on both Easy and Hard difficulty settings. Get three of your marks in a row — horizontally, vertically, or diagonally — to win. All you need is your browser, no download or registration required!</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info and related games">
+        <!-- How to Play -->
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">The board is a 3×3 grid. You are <strong>X</strong>, the computer is <strong>O</strong>.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Click any empty cell on your turn to place your mark.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">Get 3 of your marks in a row — across, down, or diagonally — to win!</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">If all 9 cells are filled with no winner, it's a draw.</div></div>
+        </div>
+
+        <!-- Related Games -->
+        <div class="sidebar-card">
+          <h3>🎮 Related Games</h3>
+          <a href="../snake/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
+            <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
+          </a>
+          <a href="../memory/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
+            <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
+          </a>
+          <a href="../2048/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
+            <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
+          </a>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Chess">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#1F2937,#6B7280)">♟️</div>
+            <div class="related-info"><div class="title">Chess</div><div class="cat">Strategy</div></div>
+          </div>
+        </div>
+
+        <!-- Ad slot -->
+        <div class="ad-slot" aria-label="Advertisement" style="min-height:250px;">
+          <div class="ad-slot-label">Advertisement</div>
+          <!-- Google AdSense 300x250 -->
+        </div>
+      </aside>
+
+    </div><!-- /game-page-layout -->
+  </div><!-- /container -->
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="../../assets/logo.png" alt="Ductgames" class="footer-logo-img" />
+      <p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p>
+    </div>
+    <div class="footer-col">
+      <h4>Games</h4>
+      <ul>
+        <li><a href="../../index.html">All Games</a></li>
+        <li><a href="../../index.html?cat=puzzle">Puzzle</a></li>
+        <li><a href="../../index.html?cat=arcade">Arcade</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="../../pages/about.html">About Us</a></li>
+        <li><a href="../../pages/contact.html">Contact</a></li>
+        <li><a href="../../pages/privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="../../pages/terms.html">Terms &amp; Conditions</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Ductgames. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="../../pages/privacy-policy.html">Privacy Policy</a>
+      <a href="../../pages/terms.html">Terms</a>
+      <a href="../../pages/about.html">About</a>
+      <a href="../../pages/contact.html">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>🍪 We use cookies to improve your experience. <a href="../../pages/privacy-policy.html">Learn more</a>.</p>
+  <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
+</div>
+
+<script>
+/* =============================================
+   TIC TAC TOE — GAME ENGINE
+   Player = X (human), Computer = O (AI, Minimax)
+   ============================================= */
+
+const BOARD_SIZE = 9;
+let board = Array(BOARD_SIZE).fill(null);
+let gameOver = false;
+let scores = { player: 0, ai: 0, draws: 0 };
+let difficulty = 'hard'; // 'easy' | 'hard'
+
+const WIN_COMBOS = [
+  [0,1,2],[3,4,5],[6,7,8], // rows
+  [0,3,6],[1,4,7],[2,5,8], // cols
+  [0,4,8],[2,4,6]          // diagonals
+];
+
+// ─── INIT ──────────────────────────────────────
+function initBoard() {
+  const boardEl = document.getElementById('ttt-board');
+  boardEl.innerHTML = '';
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('button');
+    cell.className = 'ttt-cell';
+    cell.dataset.index = i;
+    cell.setAttribute('role', 'gridcell');
+    cell.setAttribute('aria-label', `Cell ${i + 1}, empty`);
+    cell.addEventListener('click', () => handlePlayerMove(i));
+    boardEl.appendChild(cell);
+  }
+}
+
+function resetGame() {
+  board = Array(BOARD_SIZE).fill(null);
+  gameOver = false;
+  initBoard();
+  setMessage('Your turn! Click a cell to play.', '');
+  setTurnIndicator('player');
+  document.getElementById('score-you-card').classList.add('active');
+  document.getElementById('score-ai-card').classList.remove('active');
+}
+
+// ─── PLAYER MOVE ───────────────────────────────
+function handlePlayerMove(index) {
+  if (gameOver || board[index]) return;
+
+  makeMove(index, 'X');
+
+  const result = checkWinner();
+  if (result) { endGame(result); return; }
+
+  setTurnIndicator('ai');
+  setMessage("Computer is thinking…", '');
+
+  setTimeout(() => {
+    const aiMove = difficulty === 'hard' ? bestMove() : randomMove();
+    if (aiMove !== null) {
+      makeMove(aiMove, 'O');
+      const res2 = checkWinner();
+      if (res2) { endGame(res2); return; }
+    }
+    setTurnIndicator('player');
+    setMessage("Your turn! Click a cell to play.", '');
+  }, 350);
+}
+
+function makeMove(index, player) {
+  board[index] = player;
+  const cell = document.querySelector(`[data-index="${index}"]`);
+  cell.textContent = player;
+  cell.classList.add('taken', player.toLowerCase());
+  cell.setAttribute('aria-label', `Cell ${index + 1}, ${player === 'X' ? 'you placed X' : 'computer placed O'}`);
+  cell.disabled = true;
+}
+
+// ─── WIN CHECK ─────────────────────────────────
+function checkWinner() {
+  for (const [a, b, c] of WIN_COMBOS) {
+    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+      return { winner: board[a], combo: [a, b, c] };
+    }
+  }
+  if (!board.includes(null)) return { winner: 'draw', combo: [] };
+  return null;
+}
+
+function endGame(result) {
+  gameOver = true;
+  if (result.winner === 'X') {
+    scores.player++;
+    setMessage('🎉 You Win! Excellent!', 'win');
+  } else if (result.winner === 'O') {
+    scores.ai++;
+    setMessage('🤖 Computer Wins! Try Again.', 'lose');
+  } else {
+    scores.draws++;
+    setMessage("🤝 It's a Draw!", 'draw');
+  }
+
+  // Highlight winning cells
+  if (result.combo.length) {
+    result.combo.forEach(i => {
+      document.querySelector(`[data-index="${i}"]`).classList.add('winning');
+    });
+  }
+
+  // Disable all cells
+  document.querySelectorAll('.ttt-cell').forEach(c => c.disabled = true);
+
+  updateScoreDisplay();
+}
+
+function updateScoreDisplay() {
+  document.getElementById('score-you').textContent = scores.player;
+  document.getElementById('score-ai').textContent = scores.ai;
+  document.getElementById('score-draws').textContent = scores.draws;
+  document.getElementById('score-display').textContent =
+    `Score: ${scores.player} — ${scores.ai}`;
+}
+
+// ─── AI: MINIMAX ───────────────────────────────
+function bestMove() {
+  let best = -Infinity, move = null;
+  for (let i = 0; i < 9; i++) {
+    if (!board[i]) {
+      board[i] = 'O';
+      const score = minimax(board, 0, false, -Infinity, Infinity);
+      board[i] = null;
+      if (score > best) { best = score; move = i; }
+    }
+  }
+  return move;
+}
+
+function minimax(b, depth, isMaximising, alpha, beta) {
+  const res = checkWinner();
+  if (res) {
+    if (res.winner === 'O') return 10 - depth;
+    if (res.winner === 'X') return depth - 10;
+    return 0;
+  }
+
+  if (isMaximising) {
+    let best = -Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = 'O';
+        best = Math.max(best, minimax(b, depth + 1, false, alpha, beta));
+        b[i] = null;
+        alpha = Math.max(alpha, best);
+        if (beta <= alpha) break;
+      }
+    }
+    return best;
+  } else {
+    let best = Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = 'X';
+        best = Math.min(best, minimax(b, depth + 1, true, alpha, beta));
+        b[i] = null;
+        beta = Math.min(beta, best);
+        if (beta <= alpha) break;
+      }
+    }
+    return best;
+  }
+}
+
+// ─── AI: EASY (RANDOM) ─────────────────────────
+function randomMove() {
+  const empty = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+  return empty.length ? empty[Math.floor(Math.random() * empty.length)] : null;
+}
+
+// ─── UI HELPERS ────────────────────────────────
+function setMessage(text, type) {
+  const el = document.getElementById('game-message');
+  el.textContent = text;
+  el.className = 'game-message' + (type ? ' ' + type : '');
+}
+
+function setTurnIndicator(who) {
+  const label = document.getElementById('turn-label');
+  const dot = document.getElementById('player-dot');
+  const youCard = document.getElementById('score-you-card');
+  const aiCard = document.getElementById('score-ai-card');
+  if (who === 'player') {
+    label.textContent = 'Your Turn (X)';
+    dot.style.background = 'var(--primary)';
+    youCard.classList.add('active');
+    aiCard.classList.remove('active');
+  } else {
+    label.textContent = "Computer's Turn (O)";
+    dot.style.background = 'var(--accent)';
+    youCard.classList.remove('active');
+    aiCard.classList.add('active');
+  }
+}
+
+// ─── DIFFICULTY TOGGLE ─────────────────────────
+document.getElementById('difficulty-btn').addEventListener('click', () => {
+  difficulty = difficulty === 'hard' ? 'easy' : 'hard';
+  document.getElementById('difficulty-btn').textContent =
+    difficulty === 'hard' ? '🤖 AI: Hard' : '😌 AI: Easy';
+  resetGame();
+});
+
+// ─── RESET BTN ─────────────────────────────────
+document.getElementById('reset-btn').addEventListener('click', resetGame);
+
+// ─── RELATED GAMES HELPER ──────────────────────
+function showComingSoon() {
+  alert('🚀 Coming soon! Check back for more games.');
+}
+
+// ─── HEADER SEARCH ─────────────────────────────
+document.getElementById('header-search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) window.location.href = `../../search.html?q=${encodeURIComponent(q)}`;
+  }
+});
+
+// ─── COOKIE BANNER ─────────────────────────────
+if (localStorage.getItem('dg_cookie_consent') !== 'true') {
+  document.getElementById('cookie-banner').style.display = 'flex';
+}
+document.getElementById('cookie-accept-btn').addEventListener('click', () => {
+  localStorage.setItem('dg_cookie_consent', 'true');
+  document.getElementById('cookie-banner').style.opacity = '0';
+  setTimeout(() => document.getElementById('cookie-banner').remove(), 300);
+});
+
+// ─── START ─────────────────────────────────────
+resetGame();
+</script>
+</body>
+</html>

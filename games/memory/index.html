@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Match – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play Memory Match free online at Ductgames. Flip cards and find matching pairs. No download, no sign-up required!" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/memory/" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
+  <style>
+    .memory-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .score-cards {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .score-card {
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      min-width: 90px;
+      transition: var(--transition);
+    }
+    .score-card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .score-card .value { font-size: 1.7rem; font-weight: 900; line-height: 1.2; color: var(--primary); }
+    .score-card .value.gold { color: #F59E0B; }
+    .score-card .value.green { color: #22C55E; }
+
+    /* Card Grid */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .mem-card {
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      perspective: 600px;
+      border-radius: var(--radius-md);
+      user-select: none;
+      min-height: 80px;
+    }
+
+    .mem-card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+      border-radius: var(--radius-md);
+    }
+
+    .mem-card.flipped .mem-card-inner,
+    .mem-card.matched .mem-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .mem-card-front,
+    .mem-card-back {
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Back = card face-down (purple pattern) */
+    .mem-card-back {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: 2px solid rgba(255,255,255,0.15);
+      font-size: 1.4rem;
+      color: rgba(255,255,255,0.3);
+    }
+    .mem-card-back::after {
+      content: '?';
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* Front = emoji face-up */
+    .mem-card-front {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      transform: rotateY(180deg);
+      font-size: 2.2rem;
+      transition: var(--transition);
+    }
+
+    .mem-card.matched .mem-card-front {
+      background: rgba(34,197,94,0.1);
+      border-color: #22C55E;
+      box-shadow: 0 0 0 2px rgba(34,197,94,0.3);
+    }
+
+    .mem-card:hover:not(.flipped):not(.matched) .mem-card-back {
+      background: linear-gradient(135deg, var(--primary-light), var(--primary));
+    }
+
+    /* Difficulty selector */
+    .difficulty-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .diff-btn {
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .diff-btn.active, .diff-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Win modal */
+    .win-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,10,30,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+    .win-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 40px 36px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      max-width: 380px;
+      width: 100%;
+      animation: popIn 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .win-card .emoji { font-size: 3.5rem; margin-bottom: 12px; }
+    .win-card h2 { font-size: 1.7rem; font-weight: 900; color: var(--text-main); margin-bottom: 8px; }
+    .win-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+    .win-stats {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .win-stat { text-align: center; }
+    .win-stat .num { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
+    .win-stat .lbl { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+    @media (max-width: 480px) {
+      .memory-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+      .mem-card-front { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo" aria-label="Back to Ductgames Home">
+      <img src="../../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="../../index.html" class="nav-link">All Games</a>
+      <a href="../../index.html?cat=puzzle" class="nav-link active">Puzzle</a>
+      <a href="../../index.html?cat=arcade" class="nav-link">Arcade</a>
+      <a href="../../index.html?cat=strategy" class="nav-link">Strategy</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+    <div class="header-actions">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a><meta itemprop="position" content="2" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Memory Match</span><meta itemprop="position" content="3" /></li>
+      </ol>
+    </nav>
+
+    <div class="game-page-layout">
+
+
+      <!-- GAME CENTER -->
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">Memory Match</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator" id="player-indicator">
+                <div class="player-dot" id="player-dot" style="background:#8B5CF6;"></div>
+                <span id="turn-label">Find all matching pairs!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards">
+            <div class="score-card">
+              <div class="label">Moves</div>
+              <div class="value" id="moves-count">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Pairs Found</div>
+              <div class="value green" id="pairs-found">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Time</div>
+              <div class="value gold" id="timer-display">0:00</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Best</div>
+              <div class="value" id="best-moves">--</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive" style="background:var(--primary);">
+            🃏 Flip cards to find matching pairs!
+          </div>
+
+          <!-- Difficulty -->
+          <div class="difficulty-btns">
+            <button class="diff-btn active" data-size="4x4" id="btn-4x4">4×4 (Easy)</button>
+            <button class="diff-btn" data-size="4x5" id="btn-4x5">4×5 (Medium)</button>
+            <button class="diff-btn" data-size="5x6" id="btn-5x6">5×6 (Hard)</button>
+          </div>
+
+          <!-- Game Board -->
+          <div class="memory-wrapper">
+            <div class="memory-grid" id="memory-grid" role="grid" aria-label="Memory card grid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="New game">🔄 New Game</button>
+          </div>
+
+          <!-- Ad -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <span>Advertisement</span>
+          </div>
+
+          <!-- SEO -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About Memory Match</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">Memory Match is a classic card-flipping concentration game that challenges your visual memory and recall. Flip cards two at a time to find matching emoji pairs. The game features three difficulty levels — 4×4 (16 cards), 4×5 (20 cards), and 5×6 (30 cards) — with a built-in timer and move counter to track your performance. Challenge yourself to beat your best score! Free to play, no download or registration needed.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info">
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Click any card to <strong>flip it over</strong> and reveal the emoji.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Click a <strong>second card</strong> to see if it matches the first.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">If they <strong>match</strong>, they stay face-up. If not, both flip back!</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">Find all pairs with the <strong>fewest moves</strong> to win!</div></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎮 Related Games</h3>
+          <a href="../tictactoe/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
+            <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
+          </a>
+          <a href="../snake/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
+            <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
+          </a>
+          <a href="../2048/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
+            <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
+          </a>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Chess">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#1F2937,#6B7280)">♟️</div>
+            <div class="related-info"><div class="title">Chess</div><div class="cat">Strategy</div></div>
+          </div>
+        </div>
+
+        <div class="ad-slot" aria-label="Advertisement" style="min-height:250px;">
+          <div class="ad-slot-label">Advertisement</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="../../assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="../../index.html">All Games</a></li><li><a href="../../index.html?cat=puzzle">Puzzle</a></li><li><a href="../../index.html?cat=arcade">Arcade</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="../../pages/about.html">About Us</a></li><li><a href="../../pages/contact.html">Contact</a></li><li><a href="../../pages/privacy-policy.html">Privacy Policy</a></li><li><a href="../../pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="../../pages/privacy-policy.html">Privacy Policy</a><a href="../../pages/terms.html">Terms</a><a href="../../pages/about.html">About</a><a href="../../pages/contact.html">Contact</a></div></div>
+</footer>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>🍪 We use cookies to improve your experience. <a href="../../pages/privacy-policy.html">Learn more</a>.</p>
+  <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
+</div>
+
+<!-- Win Modal -->
+<div class="win-overlay" id="win-overlay" style="display:none;" role="dialog" aria-label="You won!">
+  <div class="win-card">
+    <div class="emoji">🎉</div>
+    <h2>You Won!</h2>
+    <p>Congratulations! You matched all the pairs!</p>
+    <div class="win-stats">
+      <div class="win-stat">
+        <div class="num" id="win-moves">--</div>
+        <div class="lbl">Moves</div>
+      </div>
+      <div class="win-stat">
+        <div class="num" id="win-time">--</div>
+        <div class="lbl">Time</div>
+      </div>
+      <div class="win-stat">
+        <div class="num" id="win-best">--</div>
+        <div class="lbl">Best</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="win-play-again" style="width:100%; justify-content:center; padding:14px;">
+      🔄 Play Again
+    </button>
+  </div>
+</div>
+
+<script>
+/* ==============================================
+   MEMORY MATCH — GAME ENGINE
+   ============================================= */
+
+const EMOJI_POOL = [
+  '🦊','🐬','🦁','🐸','🦋','🐳','🦚','🐙',
+  '🦜','🐢','🦄','🐝','🐻','🦀','🦩','🐯',
+  '🦕','🐡','🦝','🐠','🦦','🦭','🐺','🦤',
+  '🦋','🌈','⚡','🔥','💎','🍀','🌺','🎯',
+];
+
+let cards = [];
+let flippedCards = [];
+let matchedCount = 0;
+let moves = 0;
+let timerInterval = null;
+let elapsedSeconds = 0;
+let gameActive = false;
+let lockBoard = false;
+let gridSize = { cols: 4, rows: 4 };
+let bestMoves = parseInt(localStorage.getItem('dg_memory_best_4x4') || '0') || null;
+
+// ─── INIT ──────────────────────────────────────
+function initGame() {
+  clearInterval(timerInterval);
+  elapsedSeconds = 0;
+  moves = 0;
+  matchedCount = 0;
+  flippedCards = [];
+  lockBoard = false;
+  gameActive = false;
+  cards = [];
+
+  const totalPairs = (gridSize.cols * gridSize.rows) / 2;
+  const emojis = EMOJI_POOL.slice(0, totalPairs);
+  const deck = [...emojis, ...emojis];
+  shuffleArray(deck);
+
+  const grid = document.getElementById('memory-grid');
+  grid.style.gridTemplateColumns = `repeat(${gridSize.cols}, 1fr)`;
+  grid.innerHTML = '';
+
+  deck.forEach((emoji, idx) => {
+    const card = document.createElement('div');
+    card.className = 'mem-card';
+    card.dataset.emoji = emoji;
+    card.dataset.index = idx;
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Memory card, face down');
+    card.innerHTML = `
+      <div class="mem-card-inner">
+        <div class="mem-card-front">${emoji}</div>
+        <div class="mem-card-back"></div>
+      </div>`;
+    card.addEventListener('click', () => handleCardClick(card));
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(card); } });
+    grid.appendChild(card);
+    cards.push(card);
+  });
+
+  updateUI();
+  updateBestDisplay();
+  document.getElementById('win-overlay').style.display = 'none';
+  document.getElementById('game-message').textContent = '🃏 Flip cards to find matching pairs!';
+  document.getElementById('game-message').style.background = 'var(--primary)';
+  document.getElementById('player-dot').style.background = '#8B5CF6';
+  document.getElementById('turn-label').textContent = 'Find all matching pairs!';
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// ─── CARD CLICK ────────────────────────────────
+function handleCardClick(card) {
+  if (lockBoard || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+  if (!gameActive) {
+    gameActive = true;
+    startTimer();
+  }
+
+  card.classList.add('flipped');
+  card.setAttribute('aria-label', `Memory card, ${card.dataset.emoji}`);
+  flippedCards.push(card);
+
+  if (flippedCards.length === 2) {
+    moves++;
+    updateUI();
+    lockBoard = true;
+    checkMatch();
+  }
+}
+
+function checkMatch() {
+  const [a, b] = flippedCards;
+  if (a.dataset.emoji === b.dataset.emoji) {
+    // Match!
+    setTimeout(() => {
+      a.classList.add('matched');
+      b.classList.add('matched');
+      a.setAttribute('aria-label', `Matched: ${a.dataset.emoji}`);
+      b.setAttribute('aria-label', `Matched: ${b.dataset.emoji}`);
+      flippedCards = [];
+      lockBoard = false;
+      matchedCount++;
+      updateUI();
+      checkWin();
+    }, 300);
+  } else {
+    // No match — flip back
+    setTimeout(() => {
+      a.classList.remove('flipped');
+      b.classList.remove('flipped');
+      a.setAttribute('aria-label', 'Memory card, face down');
+      b.setAttribute('aria-label', 'Memory card, face down');
+      flippedCards = [];
+      lockBoard = false;
+    }, 800);
+  }
+}
+
+function checkWin() {
+  const totalPairs = (gridSize.cols * gridSize.rows) / 2;
+  if (matchedCount === totalPairs) {
+    clearInterval(timerInterval);
+    gameActive = false;
+    const sizeKey = `dg_memory_best_${gridSize.cols}x${gridSize.rows}`;
+    const stored = parseInt(localStorage.getItem(sizeKey) || '0') || Infinity;
+    if (!stored || moves < stored) {
+      localStorage.setItem(sizeKey, moves);
+      bestMoves = moves;
+    }
+    setTimeout(showWin, 400);
+  }
+}
+
+function showWin() {
+  document.getElementById('win-moves').textContent = moves;
+  document.getElementById('win-time').textContent = formatTime(elapsedSeconds);
+  const sizeKey = `dg_memory_best_${gridSize.cols}x${gridSize.rows}`;
+  const best = parseInt(localStorage.getItem(sizeKey) || '0') || '--';
+  document.getElementById('win-best').textContent = best + (best !== '--' ? ' mvs' : '');
+  document.getElementById('win-overlay').style.display = 'flex';
+}
+
+// ─── TIMER ─────────────────────────────────────
+function startTimer() {
+  timerInterval = setInterval(() => {
+    elapsedSeconds++;
+    document.getElementById('timer-display').textContent = formatTime(elapsedSeconds);
+  }, 1000);
+}
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${m}:${sec.toString().padStart(2, '0')}`;
+}
+
+// ─── UI UPDATE ─────────────────────────────────
+function updateUI() {
+  document.getElementById('moves-count').textContent = moves;
+  const totalPairs = (gridSize.cols * gridSize.rows) / 2;
+  document.getElementById('pairs-found').textContent = `${matchedCount}/${totalPairs}`;
+}
+
+function updateBestDisplay() {
+  const sizeKey = `dg_memory_best_${gridSize.cols}x${gridSize.rows}`;
+  const best = localStorage.getItem(sizeKey);
+  document.getElementById('best-moves').textContent = best ? best + ' mvs' : '--';
+}
+
+// ─── DIFFICULTY ────────────────────────────────
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const size = btn.dataset.size;
+    if (size === '4x4') gridSize = { cols: 4, rows: 4 };
+    else if (size === '4x5') gridSize = { cols: 4, rows: 5 };
+    else if (size === '5x6') gridSize = { cols: 5, rows: 6 };
+    initGame();
+  });
+});
+
+// ─── RESET ─────────────────────────────────────
+document.getElementById('reset-btn').addEventListener('click', initGame);
+document.getElementById('win-play-again').addEventListener('click', () => {
+  document.getElementById('win-overlay').style.display = 'none';
+  initGame();
+});
+
+// ─── HEADER SEARCH ─────────────────────────────
+document.getElementById('header-search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) window.location.href = `../../search.html?q=${encodeURIComponent(q)}`;
+  }
+});
+
+// ─── COOKIE BANNER ─────────────────────────────
+if (localStorage.getItem('dg_cookie_consent') !== 'true') {
+  document.getElementById('cookie-banner').style.display = 'flex';
+}
+document.getElementById('cookie-accept-btn').addEventListener('click', () => {
+  localStorage.setItem('dg_cookie_consent', 'true');
+  document.getElementById('cookie-banner').style.opacity = '0';
+  setTimeout(() => document.getElementById('cookie-banner').remove(), 300);
+});
+
+function showComingSoon() { alert('🚀 Coming soon! Check back for more games.'); }
+
+// ─── MOBILE MENU ───────────────────────────────
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('main-nav');
+  const open = nav.style.display === 'flex';
+  nav.style.display = open ? 'none' : 'flex';
+  nav.style.flexDirection = 'column';
+  nav.style.position = 'absolute';
+  nav.style.top = '64px';
+  nav.style.left = '0';
+  nav.style.right = '0';
+  nav.style.background = '#fff';
+  nav.style.padding = '12px 24px';
+  nav.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+  nav.style.zIndex = '99';
+});
+
+// ─── START ─────────────────────────────────────
+initGame();
+</script>
+</body>
+</html>

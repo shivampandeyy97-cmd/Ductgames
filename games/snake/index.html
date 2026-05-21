@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play Snake free online at Ductgames. Classic arcade snake game — eat, grow, avoid walls! No download, no sign-up required." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/snake/" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
+  <style>
+    .snake-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    .snake-canvas {
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border);
+      background: #0F0A1E;
+      display: block;
+      image-rendering: pixelated;
+    }
+    .score-cards {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+    }
+    .score-card {
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      min-width: 90px;
+      transition: var(--transition);
+    }
+    .score-card.active {
+      border-color: var(--primary);
+      background: rgba(108,60,225,0.05);
+    }
+    .score-card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .score-card .value { font-size: 1.7rem; font-weight: 900; line-height: 1.2; }
+    .score-card .value.snake-green { color: #22C55E; }
+    .score-card .value.snake-gold { color: #F59E0B; }
+    .score-card .value.snake-purple { color: var(--primary); }
+    .mobile-controls {
+      display: none;
+      gap: 8px;
+      justify-content: center;
+    }
+    .mobile-controls button {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+    .mobile-controls button:active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .d-pad {
+      display: grid;
+      grid-template-areas: ". up ." "left . right" ". down .";
+      grid-template-columns: repeat(3, 52px);
+      grid-template-rows: repeat(3, 52px);
+      gap: 6px;
+    }
+    .d-pad .up { grid-area: up; }
+    .d-pad .down { grid-area: down; }
+    .d-pad .left { grid-area: left; }
+    .d-pad .right { grid-area: right; }
+    @media (max-width: 768px) {
+      .mobile-controls { display: grid; }
+      .snake-canvas { max-width: 100%; height: auto !important; }
+    }
+    .snake-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15,10,30,0.85);
+      border-radius: var(--radius-md);
+      z-index: 5;
+      gap: 12px;
+    }
+    .snake-overlay h2 { color: #fff; font-size: 1.5rem; font-weight: 900; }
+    .snake-overlay p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+    .canvas-container { position: relative; display: inline-block; }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo" aria-label="Back to Ductgames Home">
+      <img src="../../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="../../index.html" class="nav-link">All Games</a>
+      <a href="../../index.html?cat=puzzle" class="nav-link">Puzzle</a>
+      <a href="../../index.html?cat=arcade" class="nav-link active">Arcade</a>
+      <a href="../../index.html?cat=strategy" class="nav-link">Strategy</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+    <div class="header-actions">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html?cat=arcade" itemprop="item" style="color:var(--primary);"><span itemprop="name">Arcade</span></a><meta itemprop="position" content="2" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">Snake</span><meta itemprop="position" content="3" /></li>
+      </ol>
+    </nav>
+
+    <div class="game-page-layout">
+
+
+      <!-- GAME CENTER -->
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">Snake</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator" id="player-indicator">
+                <div class="player-dot" id="player-dot" style="background:#22C55E;"></div>
+                <span id="turn-label">Press Start or any arrow key</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards">
+            <div class="score-card active">
+              <div class="label">Score</div>
+              <div class="value snake-green" id="score-current">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">High Score</div>
+              <div class="value snake-gold" id="score-high">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Length</div>
+              <div class="value snake-purple" id="score-length">3</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive" style="background:#22C55E;">
+            Press ▶ Start or any arrow key to begin!
+          </div>
+
+          <!-- Game Canvas -->
+          <div class="snake-wrapper">
+            <div class="canvas-container" id="canvas-container">
+              <canvas class="snake-canvas" id="snake-canvas" width="400" height="400"></canvas>
+              <div class="snake-overlay" id="snake-overlay">
+                <h2>🐍 Snake</h2>
+                <p>Use arrow keys or WASD to move</p>
+                <button class="btn-primary" id="start-btn" style="margin-top:8px;">▶ Start Game</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Controls -->
+          <div class="mobile-controls d-pad" id="mobile-controls">
+            <button class="up" data-dir="up" aria-label="Move up">▲</button>
+            <button class="left" data-dir="left" aria-label="Move left">◄</button>
+            <button class="right" data-dir="right" aria-label="Move right">►</button>
+            <button class="down" data-dir="down" aria-label="Move down">▼</button>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="Reset game">🔄 New Game</button>
+            <button class="btn-secondary" id="speed-btn" style="padding:12px 24px; border-radius:50px; font-size:0.92rem;">🚀 Speed: Normal</button>
+          </div>
+
+          <!-- Ad -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <span>Advertisement</span>
+          </div>
+
+          <!-- SEO -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About Snake</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">Snake is a timeless arcade game that has been entertaining players since the 1970s. Control the snake using your <strong>arrow keys or WASD controls</strong>, eat food to grow longer, and avoid crashing into the walls or yourself. With multiple speed settings from Slow to Fast, this free browser version of Snake offers endless replayability. No download or registration needed — just pure retro gaming fun!</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info">
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to control the snake's direction.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Eat the <strong style="color:#EF4444;">red food</strong> to grow longer and score points.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">Avoid hitting the <strong>walls</strong> or your own <strong>tail</strong>.</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">The longer you survive, the higher your score!</div></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎮 Related Games</h3>
+          <a href="../tictactoe/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
+            <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
+          </a>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play 2048">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
+            <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
+          </div>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Brick Breaker">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F472B6,#EF4444)">🧱</div>
+            <div class="related-info"><div class="title">Brick Breaker</div><div class="cat">Arcade</div></div>
+          </div>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Flappy Bird">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#84CC16,#0EA5E9)">🐦</div>
+            <div class="related-info"><div class="title">Flappy Bird</div><div class="cat">Arcade</div></div>
+          </div>
+        </div>
+
+        <div class="ad-slot" aria-label="Advertisement" style="min-height:250px;">
+          <div class="ad-slot-label">Advertisement</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="../../assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="../../index.html">All Games</a></li><li><a href="../../index.html?cat=puzzle">Puzzle</a></li><li><a href="../../index.html?cat=arcade">Arcade</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="../../pages/about.html">About Us</a></li><li><a href="../../pages/contact.html">Contact</a></li><li><a href="../../pages/privacy-policy.html">Privacy Policy</a></li><li><a href="../../pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="../../pages/privacy-policy.html">Privacy Policy</a><a href="../../pages/terms.html">Terms</a><a href="../../pages/about.html">About</a><a href="../../pages/contact.html">Contact</a></div></div>
+</footer>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>🍪 We use cookies to improve your experience. <a href="../../pages/privacy-policy.html">Learn more</a>.</p>
+  <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
+</div>
+
+<script>
+/* =============================================
+   SNAKE — GAME ENGINE
+   ============================================= */
+
+const GRID = 20;
+const CELL_SIZE = 20;
+const canvas = document.getElementById('snake-canvas');
+const ctx = canvas.getContext('2d');
+
+let snake, food, direction, nextDirection, score, highScore, gameRunning, gameLoop, speed;
+
+const SPEEDS = { slow: 150, normal: 100, fast: 60 };
+let speedMode = 'normal';
+
+// Colors
+const COLORS = {
+  bg: '#0F0A1E',
+  grid: 'rgba(108,60,225,0.06)',
+  snakeHead: '#22C55E',
+  snakeBody: '#16A34A',
+  snakeTail: '#15803D',
+  food: '#EF4444',
+  foodGlow: 'rgba(239,68,68,0.3)',
+  wall: 'rgba(108,60,225,0.15)',
+};
+
+function initGame() {
+  snake = [
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+    { x: 8, y: 10 },
+  ];
+  direction = 'right';
+  nextDirection = 'right';
+  score = 0;
+  highScore = parseInt(localStorage.getItem('dg_snake_high') || '0');
+  food = spawnFood();
+  gameRunning = false;
+  speed = SPEEDS[speedMode];
+  updateUI();
+  drawGame();
+  showOverlay(true);
+}
+
+function spawnFood() {
+  let pos;
+  do {
+    pos = { x: Math.floor(Math.random() * GRID), y: Math.floor(Math.random() * GRID) };
+  } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+  return pos;
+}
+
+function drawGame() {
+  ctx.fillStyle = COLORS.bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Grid lines
+  ctx.strokeStyle = COLORS.grid;
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= GRID; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * CELL_SIZE, 0);
+    ctx.lineTo(i * CELL_SIZE, canvas.height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, i * CELL_SIZE);
+    ctx.lineTo(canvas.width, i * CELL_SIZE);
+    ctx.stroke();
+  }
+
+  // Food glow
+  const fx = food.x * CELL_SIZE + CELL_SIZE / 2;
+  const fy = food.y * CELL_SIZE + CELL_SIZE / 2;
+  const glow = ctx.createRadialGradient(fx, fy, 2, fx, fy, CELL_SIZE * 1.5);
+  glow.addColorStop(0, COLORS.foodGlow);
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Food
+  ctx.fillStyle = COLORS.food;
+  ctx.shadowColor = COLORS.food;
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(fx, fy, CELL_SIZE / 2 - 2, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Snake
+  snake.forEach((seg, i) => {
+    const x = seg.x * CELL_SIZE;
+    const y = seg.y * CELL_SIZE;
+    const progress = i / snake.length;
+
+    if (i === 0) {
+      ctx.fillStyle = COLORS.snakeHead;
+      ctx.shadowColor = COLORS.snakeHead;
+      ctx.shadowBlur = 8;
+    } else {
+      const r = parseInt(COLORS.snakeBody.slice(1, 3), 16);
+      const g = parseInt(COLORS.snakeBody.slice(3, 5), 16);
+      const b = parseInt(COLORS.snakeBody.slice(5, 7), 16);
+      const alpha = 1 - progress * 0.5;
+      ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+      ctx.shadowBlur = 0;
+    }
+
+    const pad = i === 0 ? 1 : 2;
+    ctx.beginPath();
+    ctx.roundRect(x + pad, y + pad, CELL_SIZE - pad * 2, CELL_SIZE - pad * 2, 4);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Eyes on head
+    if (i === 0) {
+      ctx.fillStyle = '#fff';
+      const eyeSize = 3;
+      let ex1, ey1, ex2, ey2;
+      switch (direction) {
+        case 'right': ex1 = x + 14; ey1 = y + 6; ex2 = x + 14; ey2 = y + 14; break;
+        case 'left':  ex1 = x + 6;  ey1 = y + 6; ex2 = x + 6;  ey2 = y + 14; break;
+        case 'up':    ex1 = x + 6;  ey1 = y + 6; ex2 = x + 14; ey2 = y + 6;  break;
+        case 'down':  ex1 = x + 6;  ey1 = y + 14; ex2 = x + 14; ey2 = y + 14; break;
+      }
+      ctx.beginPath(); ctx.arc(ex1, ey1, eyeSize, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(ex2, ey2, eyeSize, 0, Math.PI * 2); ctx.fill();
+    }
+  });
+}
+
+function update() {
+  direction = nextDirection;
+  const head = { ...snake[0] };
+
+  switch (direction) {
+    case 'up':    head.y--; break;
+    case 'down':  head.y++; break;
+    case 'left':  head.x--; break;
+    case 'right': head.x++; break;
+  }
+
+  // Wall collision
+  if (head.x < 0 || head.x >= GRID || head.y < 0 || head.y >= GRID) {
+    gameOverHandler();
+    return;
+  }
+
+  // Self collision
+  if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    gameOverHandler();
+    return;
+  }
+
+  snake.unshift(head);
+
+  // Eat food
+  if (head.x === food.x && head.y === food.y) {
+    score += 10;
+    food = spawnFood();
+    // Don't remove tail — snake grows
+  } else {
+    snake.pop();
+  }
+
+  updateUI();
+  drawGame();
+}
+
+function gameOverHandler() {
+  gameRunning = false;
+  clearInterval(gameLoop);
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('dg_snake_high', highScore.toString());
+  }
+  updateUI();
+  setMessage(`💀 Game Over! Score: ${score}`, 'lose');
+  showOverlay(false);
+}
+
+function startGame() {
+  if (gameRunning) return;
+  hideOverlay();
+  gameRunning = true;
+  setMessage('🐍 Go go go!', '');
+  gameLoop = setInterval(update, speed);
+}
+
+function resetAndStart() {
+  clearInterval(gameLoop);
+  initGame();
+  hideOverlay();
+  gameRunning = true;
+  setMessage('🐍 Go go go!', '');
+  gameLoop = setInterval(update, speed);
+}
+
+function updateUI() {
+  document.getElementById('score-current').textContent = score;
+  document.getElementById('score-high').textContent = highScore;
+  document.getElementById('score-length').textContent = snake.length;
+}
+
+function setMessage(text, type) {
+  const el = document.getElementById('game-message');
+  el.textContent = text;
+  el.className = 'game-message';
+  if (type === 'lose') el.style.background = '#EF4444';
+  else if (type === 'win') el.style.background = '#22C55E';
+  else el.style.background = '#22C55E';
+}
+
+function showOverlay(isStart) {
+  const overlay = document.getElementById('snake-overlay');
+  overlay.style.display = 'flex';
+  if (isStart) {
+    overlay.innerHTML = `<h2>🐍 Snake</h2><p>Use arrow keys or WASD to move</p><button class="btn-primary" id="start-btn" style="margin-top:8px;">▶ Start Game</button>`;
+  } else {
+    overlay.innerHTML = `<h2>💀 Game Over</h2><p>Score: ${score} ${score >= highScore ? '🏆 New High Score!' : ''}</p><button class="btn-primary" id="start-btn" style="margin-top:8px;">🔄 Play Again</button>`;
+  }
+  document.getElementById('start-btn').addEventListener('click', resetAndStart);
+}
+
+function hideOverlay() {
+  document.getElementById('snake-overlay').style.display = 'none';
+}
+
+// Controls
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  const dirMap = {
+    arrowup: 'up', arrowdown: 'down', arrowleft: 'left', arrowright: 'right',
+    w: 'up', s: 'down', a: 'left', d: 'right',
+  };
+  const newDir = dirMap[key] || dirMap[e.key];
+  if (!newDir) return;
+
+  e.preventDefault();
+
+  const opposites = { up: 'down', down: 'up', left: 'right', right: 'left' };
+  if (opposites[newDir] === direction) return;
+
+  nextDirection = newDir;
+
+  if (!gameRunning && !document.getElementById('snake-overlay').style.display !== 'flex') {
+    resetAndStart();
+  } else if (!gameRunning) {
+    resetAndStart();
+  }
+});
+
+// Mobile controls
+document.querySelectorAll('.d-pad button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const dir = btn.dataset.dir;
+    const opposites = { up: 'down', down: 'up', left: 'right', right: 'left' };
+    if (opposites[dir] !== direction) {
+      nextDirection = dir;
+    }
+    if (!gameRunning) {
+      resetAndStart();
+    }
+  });
+});
+
+// Reset button
+document.getElementById('reset-btn').addEventListener('click', () => {
+  clearInterval(gameLoop);
+  initGame();
+});
+
+// Speed toggle
+document.getElementById('speed-btn').addEventListener('click', () => {
+  const modes = ['slow', 'normal', 'fast'];
+  const labels = { slow: '🐢 Speed: Slow', normal: '🚀 Speed: Normal', fast: '⚡ Speed: Fast' };
+  const idx = (modes.indexOf(speedMode) + 1) % modes.length;
+  speedMode = modes[idx];
+  speed = SPEEDS[speedMode];
+  document.getElementById('speed-btn').textContent = labels[speedMode];
+  if (gameRunning) {
+    clearInterval(gameLoop);
+    gameLoop = setInterval(update, speed);
+  }
+});
+
+// Header search
+document.getElementById('header-search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) window.location.href = `../../search.html?q=${encodeURIComponent(q)}`;
+  }
+});
+
+// Cookie banner
+if (localStorage.getItem('dg_cookie_consent') !== 'true') {
+  document.getElementById('cookie-banner').style.display = 'flex';
+}
+document.getElementById('cookie-accept-btn').addEventListener('click', () => {
+  localStorage.setItem('dg_cookie_consent', 'true');
+  document.getElementById('cookie-banner').style.opacity = '0';
+  setTimeout(() => document.getElementById('cookie-banner').remove(), 300);
+});
+
+function showComingSoon() { alert('🚀 Coming soon! Check back for more games.'); }
+
+// Init
+initGame();
+</script>
+</body>
+</html>

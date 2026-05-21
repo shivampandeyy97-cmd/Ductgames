@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048 – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play 2048 free online at Ductgames. Slide tiles, combine numbers, and reach the 2048 tile! No download, no sign-up required." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/2048/" />
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
+  <style>
+    /* ─── 2048 Tile Colors ─── */
+    .score-cards { display:flex; gap:16px; width:100%; justify-content:center; flex-wrap:wrap; }
+    .score-card { background:var(--bg); border-radius:var(--radius-md); padding:14px 20px; text-align:center; border:1.5px solid var(--border); min-width:90px; transition:var(--transition); }
+    .score-card .label { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted); }
+    .score-card .value { font-size:1.7rem; font-weight:900; line-height:1.2; color:var(--primary); }
+    .score-card .value.gold { color:#F59E0B; }
+
+    /* Board */
+    .board-2048-wrapper {
+      background:var(--bg-card);
+      border-radius:var(--radius-lg);
+      padding:24px;
+      box-shadow:var(--shadow-md);
+      border:1px solid var(--border);
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+
+    .board-2048 {
+      position:relative;
+      background:#BBADA0;
+      border-radius:10px;
+      padding:10px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      touch-action:none;
+    }
+
+    .cell-bg {
+      width:90px;
+      height:90px;
+      border-radius:8px;
+      background:rgba(238,228,218,0.35);
+    }
+
+    .tiles-layer {
+      position:absolute;
+      inset:10px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      pointer-events:none;
+    }
+
+    .tile {
+      width:90px;
+      height:90px;
+      border-radius:8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:2rem;
+      transition:transform 0.1s ease;
+      animation:tileAppear 0.15s cubic-bezier(.34,1.56,.64,1);
+      position:absolute;
+    }
+
+    @keyframes tileAppear {
+      from { transform:scale(0.5); opacity:0.5; }
+      to   { transform:scale(1);   opacity:1; }
+    }
+
+    .tile-merge { animation:tileMerge 0.2s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes tileMerge {
+      0%   { transform:scale(1); }
+      50%  { transform:scale(1.2); }
+      100% { transform:scale(1); }
+    }
+
+    /* Tile colors */
+    .t2    { background:#EEE4DA; color:#776E65; }
+    .t4    { background:#EDE0C8; color:#776E65; }
+    .t8    { background:#F2B179; color:#fff; }
+    .t16   { background:#F59563; color:#fff; }
+    .t32   { background:#F67C5F; color:#fff; }
+    .t64   { background:#F65E3B; color:#fff; }
+    .t128  { background:#EDCF72; color:#fff; font-size:1.6rem; box-shadow:0 0 30px 10px rgba(243,215,116,.3); }
+    .t256  { background:#EDCC61; color:#fff; font-size:1.6rem; box-shadow:0 0 30px 10px rgba(243,215,116,.4); }
+    .t512  { background:#EDC850; color:#fff; font-size:1.5rem; box-shadow:0 0 30px 10px rgba(243,215,116,.5); }
+    .t1024 { background:#EDC53F; color:#fff; font-size:1.2rem; box-shadow:0 0 30px 10px rgba(243,215,116,.6); }
+    .t2048 { background:#EDC22E; color:#fff; font-size:1.2rem; box-shadow:0 0 60px 20px rgba(243,215,116,.8); }
+    .tsuper { background:linear-gradient(135deg,#6C3CE1,#22D1C8); color:#fff; font-size:1rem; }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .cell-bg, .tile { width:68px; height:68px; }
+      .tile { font-size:1.5rem; }
+      .t128,.t256,.t512 { font-size:1.2rem; }
+      .t1024,.t2048 { font-size:1rem; }
+    }
+
+    /* Game Over overlay */
+    .overlay-2048 {
+      position:absolute;
+      inset:0;
+      background:rgba(238,228,218,0.78);
+      border-radius:10px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      backdrop-filter:blur(2px);
+      z-index:10;
+    }
+    .overlay-2048 h2 { font-size:1.8rem; font-weight:900; color:var(--text-main); }
+    .overlay-2048 p  { font-size:0.95rem; color:var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="../../index.html" class="logo" aria-label="Back to Ductgames Home">
+      <img src="../../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="../../index.html" class="nav-link">All Games</a>
+      <a href="../../index.html?cat=puzzle" class="nav-link active">Puzzle</a>
+      <a href="../../index.html?cat=arcade" class="nav-link">Arcade</a>
+      <a href="../../index.html?cat=strategy" class="nav-link">Strategy</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+    <div class="header-actions">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a><meta itemprop="position" content="2" /></li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">2048</span><meta itemprop="position" content="3" /></li>
+      </ol>
+    </nav>
+
+    <div class="game-page-layout">
+
+
+      <!-- GAME CENTER -->
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">2048</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator">
+                <div class="player-dot" style="background:#F59E0B;"></div>
+                <span id="turn-label">Slide tiles to combine them!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards">
+            <div class="score-card">
+              <div class="label">Score</div>
+              <div class="value" id="score-current">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Best Score</div>
+              <div class="value gold" id="score-best">0</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Moves</div>
+              <div class="value" id="moves-count">0</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive" style="background:#F59E0B;">
+            Use arrow keys or swipe to slide tiles!
+          </div>
+
+          <!-- Game Board -->
+          <div class="board-2048-wrapper">
+            <div class="board-2048" id="board-2048" role="grid" aria-label="2048 game board">
+              <!-- 16 background cells -->
+              <div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div>
+              <div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div>
+              <div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div>
+              <div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div><div class="cell-bg"></div>
+              <!-- Tiles layer -->
+              <div class="tiles-layer" id="tiles-layer"></div>
+              <!-- Overlay -->
+              <div class="overlay-2048" id="game-overlay" style="display:none;">
+                <h2 id="overlay-title">Game Over</h2>
+                <p id="overlay-msg">No more moves! Try again?</p>
+                <button class="btn-primary" id="overlay-restart" style="margin-top:4px;">🔄 Play Again</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="New game">🔄 New Game</button>
+            <button class="btn-secondary" id="undo-btn" style="padding:12px 24px; border-radius:50px; font-size:0.92rem;" aria-label="Undo last move">↩ Undo</button>
+          </div>
+
+          <!-- Keyboard hint -->
+          <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; margin-top:-4px;">
+            ⌨️ Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to slide · Swipe on mobile
+          </p>
+
+          <!-- Ad -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <span>Advertisement</span>
+          </div>
+
+          <!-- SEO -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About 2048</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">2048 is an addictive sliding tile puzzle game. Use your <strong>arrow keys</strong> (or WASD) to slide numbered tiles on a 4×4 grid. When two tiles with the same number collide, they merge into one! Your goal is to reach the <strong>2048 tile</strong>. Features undo, high-score tracking, and mobile swipe support. Free to play — no download, no registration needed.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info">
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Use <strong>Arrow Keys</strong> or <strong>WASD</strong> to slide all tiles in that direction.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">When two tiles with the <strong>same number</strong> collide, they <strong>merge</strong> into one.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">A new tile (<strong>2</strong> or <strong>4</strong>) appears after every move.</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">Reach the <strong>2048 tile</strong> to win — or keep going for a high score!</div></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎮 Related Games</h3>
+          <a href="../tictactoe/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
+            <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
+          </a>
+          <a href="../snake/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
+            <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
+          </a>
+          <a href="../memory/index.html" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
+            <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
+          </a>
+          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Chess">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#1F2937,#6B7280)">♟️</div>
+            <div class="related-info"><div class="title">Chess</div><div class="cat">Strategy</div></div>
+          </div>
+        </div>
+
+        <div class="ad-slot" aria-label="Advertisement" style="min-height:250px;">
+          <div class="ad-slot-label">Advertisement</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="../../assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="../../index.html">All Games</a></li><li><a href="../../index.html?cat=puzzle">Puzzle</a></li><li><a href="../../index.html?cat=arcade">Arcade</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="../../pages/about.html">About Us</a></li><li><a href="../../pages/contact.html">Contact</a></li><li><a href="../../pages/privacy-policy.html">Privacy Policy</a></li><li><a href="../../pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="../../pages/privacy-policy.html">Privacy Policy</a><a href="../../pages/terms.html">Terms</a><a href="../../pages/about.html">About</a><a href="../../pages/contact.html">Contact</a></div></div>
+</footer>
+
+<!-- Cookie Banner -->
+<div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>🍪 We use cookies to improve your experience. <a href="../../pages/privacy-policy.html">Learn more</a>.</p>
+  <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
+</div>
+
+<script>
+/* ==============================================
+   2048 — GAME ENGINE
+   ============================================= */
+
+const SIZE = 4;
+let board = [];
+let score = 0;
+let moves = 0;
+let bestScore = parseInt(localStorage.getItem('dg_2048_best') || '0');
+let won = false;
+let prevBoard = null;
+let prevScore = 0;
+
+const TILE_SIZE = 90;
+const GAP = 10;
+
+// Color classes per value
+const tileClass = (v) => {
+  if (v === 0) return '';
+  if (v <= 4) return `t${v}`;
+  if (v <= 2048) return `t${v}`;
+  return 'tsuper';
+};
+
+// ─── INIT ──────────────────────────────────────
+function initGame() {
+  board = Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
+  score = 0;
+  moves = 0;
+  won = false;
+  prevBoard = null;
+  addRandomTile();
+  addRandomTile();
+  render();
+  updateUI();
+  hideOverlay();
+  document.getElementById('game-message').textContent = 'Use arrow keys or swipe to slide tiles!';
+  document.getElementById('game-message').style.background = '#F59E0B';
+}
+
+function addRandomTile() {
+  const empties = [];
+  for (let r = 0; r < SIZE; r++)
+    for (let c = 0; c < SIZE; c++)
+      if (!board[r][c]) empties.push([r, c]);
+  if (!empties.length) return;
+  const [r, c] = empties[Math.floor(Math.random() * empties.length)];
+  board[r][c] = Math.random() < 0.9 ? 2 : 4;
+}
+
+// ─── RENDER ────────────────────────────────────
+function render() {
+  const layer = document.getElementById('tiles-layer');
+  layer.innerHTML = '';
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      const val = board[r][c];
+      if (!val) continue;
+      const tile = document.createElement('div');
+      tile.className = `tile ${tileClass(val)}`;
+      tile.textContent = val;
+      // Position absolutely within the grid
+      tile.style.top  = (r * (TILE_SIZE + GAP)) + 'px';
+      tile.style.left = (c * (TILE_SIZE + GAP)) + 'px';
+      // Responsive: check if we're on small screen
+      if (window.innerWidth <= 480) {
+        tile.style.top  = (r * (68 + GAP)) + 'px';
+        tile.style.left = (c * (68 + GAP)) + 'px';
+      }
+      layer.appendChild(tile);
+    }
+  }
+}
+
+function updateUI() {
+  document.getElementById('score-current').textContent = score;
+  if (score > bestScore) {
+    bestScore = score;
+    localStorage.setItem('dg_2048_best', bestScore);
+  }
+  document.getElementById('score-best').textContent = bestScore;
+  document.getElementById('moves-count').textContent = moves;
+}
+
+// ─── SLIDE LOGIC ───────────────────────────────
+function slide(row) {
+  // Remove zeros
+  let arr = row.filter(v => v);
+  let gained = 0;
+  // Merge left
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] === arr[i + 1]) {
+      arr[i] *= 2;
+      gained += arr[i];
+      arr.splice(i + 1, 1);
+    }
+  }
+  // Pad with zeros
+  while (arr.length < SIZE) arr.push(0);
+  return { row: arr, gained };
+}
+
+function moveBoard(dir) {
+  // Save state for undo
+  prevBoard = board.map(r => [...r]);
+  prevScore = score;
+
+  let moved = false;
+  let gained = 0;
+
+  if (dir === 'left') {
+    for (let r = 0; r < SIZE; r++) {
+      const res = slide(board[r]);
+      if (res.row.join() !== board[r].join()) moved = true;
+      board[r] = res.row;
+      gained += res.gained;
+    }
+  } else if (dir === 'right') {
+    for (let r = 0; r < SIZE; r++) {
+      const rev = [...board[r]].reverse();
+      const res = slide(rev);
+      const newRow = res.row.reverse();
+      if (newRow.join() !== board[r].join()) moved = true;
+      board[r] = newRow;
+      gained += res.gained;
+    }
+  } else if (dir === 'up') {
+    for (let c = 0; c < SIZE; c++) {
+      const col = board.map(r => r[c]);
+      const res = slide(col);
+      res.row.forEach((v, r) => { if (v !== board[r][c]) moved = true; board[r][c] = v; });
+      gained += res.gained;
+    }
+  } else if (dir === 'down') {
+    for (let c = 0; c < SIZE; c++) {
+      const col = board.map(r => r[c]).reverse();
+      const res = slide(col);
+      const newCol = res.row.reverse();
+      newCol.forEach((v, r) => { if (v !== board[r][c]) moved = true; board[r][c] = v; });
+      gained += res.gained;
+    }
+  }
+
+  if (moved) {
+    score += gained;
+    moves++;
+    addRandomTile();
+    render();
+    updateUI();
+    checkWinLose();
+  } else {
+    prevBoard = null; // No move happened, don't allow undo
+  }
+}
+
+// ─── WIN / LOSE ────────────────────────────────
+function checkWinLose() {
+  // Check win
+  if (!won) {
+    for (let r = 0; r < SIZE; r++) {
+      for (let c = 0; c < SIZE; c++) {
+        if (board[r][c] === 2048) {
+          won = true;
+          showOverlay('🎉 You Reached 2048!', 'Amazing! Keep going for a higher score?', true);
+          document.getElementById('game-message').textContent = '🏆 2048 reached! Keep going!';
+          document.getElementById('game-message').style.background = '#22C55E';
+          return;
+        }
+      }
+    }
+  }
+
+  // Check lose
+  if (!canMove()) {
+    showOverlay('💀 Game Over!', `Final score: ${score}. Try again?`, false);
+    document.getElementById('game-message').textContent = '😢 No more moves! Try again.';
+    document.getElementById('game-message').style.background = '#EF4444';
+  }
+}
+
+function canMove() {
+  for (let r = 0; r < SIZE; r++) {
+    for (let c = 0; c < SIZE; c++) {
+      if (!board[r][c]) return true;
+      if (c < SIZE - 1 && board[r][c] === board[r][c + 1]) return true;
+      if (r < SIZE - 1 && board[r][c] === board[r + 1][c]) return true;
+    }
+  }
+  return false;
+}
+
+function showOverlay(title, msg, isWin) {
+  document.getElementById('overlay-title').textContent = title;
+  document.getElementById('overlay-msg').textContent = msg;
+  const btn = document.getElementById('overlay-restart');
+  btn.textContent = isWin ? '🚀 Keep Playing' : '🔄 Play Again';
+  document.getElementById('game-overlay').style.display = 'flex';
+}
+
+function hideOverlay() {
+  document.getElementById('game-overlay').style.display = 'none';
+}
+
+// ─── UNDO ──────────────────────────────────────
+document.getElementById('undo-btn').addEventListener('click', () => {
+  if (!prevBoard) return;
+  board = prevBoard.map(r => [...r]);
+  score = prevScore;
+  moves = Math.max(0, moves - 1);
+  prevBoard = null;
+  render();
+  updateUI();
+  hideOverlay();
+  document.getElementById('game-message').textContent = '↩ Undid last move!';
+  document.getElementById('game-message').style.background = '#F59E0B';
+});
+
+// ─── RESET ─────────────────────────────────────
+document.getElementById('reset-btn').addEventListener('click', initGame);
+document.getElementById('overlay-restart').addEventListener('click', () => {
+  hideOverlay();
+  if (!won) initGame();
+  // If won, just keep playing (overlay already hidden)
+});
+
+// ─── KEYBOARD ──────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  const map = { ArrowUp:'up', ArrowDown:'down', ArrowLeft:'left', ArrowRight:'right',
+                w:'up', s:'down', a:'left', d:'right', W:'up', S:'down', A:'left', D:'right' };
+  const dir = map[e.key];
+  if (!dir) return;
+  e.preventDefault();
+  moveBoard(dir);
+});
+
+// ─── TOUCH / SWIPE ─────────────────────────────
+let touchStartX = 0, touchStartY = 0;
+const board2048 = document.getElementById('board-2048');
+board2048.addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+board2048.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    moveBoard(dx > 0 ? 'right' : 'left');
+  } else {
+    moveBoard(dy > 0 ? 'down' : 'up');
+  }
+}, { passive: true });
+
+// ─── HEADER SEARCH ─────────────────────────────
+document.getElementById('header-search-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    const q = e.target.value.trim();
+    if (q) window.location.href = `../../search.html?q=${encodeURIComponent(q)}`;
+  }
+});
+
+// ─── COOKIE BANNER ─────────────────────────────
+if (localStorage.getItem('dg_cookie_consent') !== 'true') {
+  document.getElementById('cookie-banner').style.display = 'flex';
+}
+document.getElementById('cookie-accept-btn').addEventListener('click', () => {
+  localStorage.setItem('dg_cookie_consent', 'true');
+  document.getElementById('cookie-banner').style.opacity = '0';
+  setTimeout(() => document.getElementById('cookie-banner').remove(), 300);
+});
+
+// ─── MOBILE MENU ───────────────────────────────
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+  const nav = document.getElementById('main-nav');
+  const open = nav.style.display === 'flex';
+  nav.style.display = open ? 'none' : 'flex';
+  nav.style.flexDirection = 'column';
+  nav.style.position = 'absolute';
+  nav.style.top = '64px';
+  nav.style.left = '0';
+  nav.style.right = '0';
+  nav.style.background = '#fff';
+  nav.style.padding = '12px 24px';
+  nav.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+  nav.style.zIndex = '99';
+});
+
+function showComingSoon() { alert('🚀 Coming soon! Check back for more games.'); }
+
+// ─── START ─────────────────────────────────────
+initGame();
+</script>
+</body>
+</html>

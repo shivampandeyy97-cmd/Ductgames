@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin or any internal folders if added later
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://ductgames.com/sitemap.xml

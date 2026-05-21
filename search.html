@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Games | Ductgames</title>
+  <meta name="description" content="Search through our library of free HTML5 browser games at Ductgames. Find puzzle games, arcade games, strategy games and more." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="index.html" class="logo" aria-label="Ductgames Home">
+      <img src="assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation">
+      <a href="index.html" class="nav-link">All Games</a>
+      <a href="index.html?cat=puzzle" class="nav-link">Puzzle</a>
+      <a href="index.html?cat=arcade" class="nav-link">Arcade</a>
+      <a href="index.html?cat=strategy" class="nav-link">Strategy</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+  </div>
+</header>
+
+<main id="main-content" class="search-page">
+<div class="container">
+
+  <!-- Search Bar -->
+  <div style="padding: 32px 0 0;">
+    <form id="search-page-form" role="search" style="display:flex; gap:10px; max-width:500px;">
+      <div class="header-search" style="flex:1; max-width:none; min-width:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="search" id="search-page-input" placeholder="Search for games…" aria-label="Search games" autocomplete="off" style="width:100%;" />
+      </div>
+      <button type="submit" class="btn-secondary" style="padding:10px 22px; border-radius:50px; font-size:0.9rem;">Search</button>
+    </form>
+  </div>
+
+  <div class="search-results-banner" aria-live="polite">
+    <p id="search-query-banner">Browse all games below.</p>
+  </div>
+
+  <!-- Ad Banner -->
+  <div class="ad-banner" aria-label="Advertisement"><span>Advertisement</span></div>
+
+  <!-- Category Tabs -->
+  <div class="category-tabs" role="tablist" aria-label="Filter by category">
+    <button class="cat-tab active" data-filter="all" role="tab" aria-selected="true">🎲 All</button>
+    <button class="cat-tab" data-filter="puzzle" role="tab" aria-selected="false">🧩 Puzzle</button>
+    <button class="cat-tab" data-filter="arcade" role="tab" aria-selected="false">🕹️ Arcade</button>
+    <button class="cat-tab" data-filter="strategy" role="tab" aria-selected="false">♟️ Strategy</button>
+  </div>
+
+  <!-- Results -->
+  <div class="games-grid" id="search-results-grid" role="list" aria-label="Search results">
+    <!-- Rendered by JS -->
+  </div>
+
+</div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="index.html">All Games</a></li><li><a href="games/tictactoe/index.html">Tic Tac Toe</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="pages/about.html">About Us</a></li><li><a href="pages/contact.html">Contact</a></li><li><a href="pages/privacy-policy.html">Privacy Policy</a></li><li><a href="pages/terms.html">Terms</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Ductgames. All rights reserved.</p>
+    <div class="footer-links"><a href="pages/privacy-policy.html">Privacy Policy</a><a href="pages/terms.html">Terms</a><a href="pages/about.html">About</a><a href="pages/contact.html">Contact</a></div>
+  </div>
+</footer>
+
+<div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
+  <p>🍪 We use cookies to improve your experience. <a href="pages/privacy-policy.html">Learn more</a>.</p>
+  <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+// Wire up search page form
+document.getElementById('search-page-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const q = document.getElementById('search-page-input').value.trim();
+  const url = new URL(window.location.href);
+  url.searchParams.set('q', q);
+  window.history.replaceState({}, '', url);
+  const banner = document.getElementById('search-query-banner');
+  if (q) {
+    banner.innerHTML = `Showing results for <strong>"${q.replace(/[<>"]/g, '')}"</strong>`;
+    runSearchPageResults(q);
+  } else {
+    banner.textContent = 'Browse all games below.';
+    runSearchPageResults('');
+  }
+});
+
+// Category tabs on search page
+document.querySelectorAll('.cat-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const q = document.getElementById('search-page-input').value.trim();
+    const filter = tab.dataset.filter;
+    // filter results
+    const grid = document.getElementById('search-results-grid');
+    let games = window._ALL_GAMES || [];
+    if (filter !== 'all') games = games.filter(g => g.category.toLowerCase() === filter);
+    if (q) games = games.filter(g => g.title.toLowerCase().includes(q.toLowerCase()) || g.tags.some(t => t.includes(q.toLowerCase())));
+    renderToGrid(grid, games);
+  });
+});
+</script>
+</body>
+</html>
