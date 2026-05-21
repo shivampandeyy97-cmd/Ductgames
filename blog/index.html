@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ductgames Blog – HTML5 Gaming News & Strategies</title>
+  <meta name="description" content="Read the latest news, strategies, and insights about free HTML5 browser games on the Ductgames blog. Learn how to master puzzle, strategy, and arcade games." />
+  <meta name="keywords" content="gaming blog, HTML5 games news, browser game strategy, retro arcade games, puzzle game benefits" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/blog/" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
+  <style>
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 32px;
+      padding: 40px 0;
+    }
+    .blog-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(108, 60, 225, 0.4);
+    }
+    .blog-card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+    }
+    .blog-card-content {
+      padding: 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+    }
+    .blog-card-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      text-decoration: none;
+    }
+    .blog-card-title:hover {
+      color: var(--primary);
+    }
+    .blog-card-excerpt {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+    .read-more-link {
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+    .read-more-link:hover {
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="../index.html" class="logo" aria-label="Ductgames Home">
+      <img src="../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="../index.html" class="nav-link">All Games</a>
+      <a href="../index.html?cat=puzzle" class="nav-link">Puzzle</a>
+      <a href="../index.html?cat=arcade" class="nav-link">Arcade</a>
+      <a href="index.html" class="nav-link active">Blog</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+    <div class="header-actions">
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <h1>Ductgames Blog</h1>
+  <p>Insights, strategies, and news from the world of HTML5 browser gaming.</p>
+</div>
+
+<main id="main-content">
+  <div class="container">
+    
+    <div class="blog-grid">
+      <!-- Blog Post 1 -->
+      <article class="blog-card">
+        <a href="why-html5-games-are-the-future.html" aria-label="Read Why HTML5 Games Are the Future of Casual Gaming">
+          <img src="../assets/blog/html5-gaming.png" alt="HTML5 Gaming Future" class="blog-card-img" />
+        </a>
+        <div class="blog-card-content">
+          <div class="blog-meta">
+            <span>May 21, 2026</span>
+            <span>Gaming Tech</span>
+          </div>
+          <a href="why-html5-games-are-the-future.html" class="blog-card-title">Why HTML5 Games Are the Future of Casual Gaming</a>
+          <p class="blog-card-excerpt">Discover why players are ditching heavy downloads and app stores for instant, high-quality HTML5 browser games.</p>
+          <div>
+            <a href="why-html5-games-are-the-future.html" class="read-more-link">Read Article <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Blog Post 2 -->
+      <article class="blog-card">
+        <a href="top-browser-strategy-games.html" aria-label="Read Top Strategy Games You Can Play Instantly">
+          <img src="../assets/blog/strategy-games.png" alt="Strategy Games" class="blog-card-img" />
+        </a>
+        <div class="blog-card-content">
+          <div class="blog-meta">
+            <span>May 20, 2026</span>
+            <span>Strategy</span>
+          </div>
+          <a href="top-browser-strategy-games.html" class="blog-card-title">Top Strategy Games You Can Play Instantly in Your Browser</a>
+          <p class="blog-card-excerpt">From classic Tic Tac Toe against advanced AI to complex board games, find out the best strategy games to test your intellect online.</p>
+          <div>
+            <a href="top-browser-strategy-games.html" class="read-more-link">Read Article <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Blog Post 3 -->
+      <article class="blog-card">
+        <a href="evolution-of-arcade-games.html" aria-label="Read The Evolution of Classic Arcade Games">
+          <img src="../assets/blog/retro-arcade.png" alt="Retro Arcade Evolution" class="blog-card-img" />
+        </a>
+        <div class="blog-card-content">
+          <div class="blog-meta">
+            <span>May 18, 2026</span>
+            <span>Retro Gaming</span>
+          </div>
+          <a href="evolution-of-arcade-games.html" class="blog-card-title">The Evolution of Classic Arcade Games: From Retro to Browser</a>
+          <p class="blog-card-excerpt">How nostalgic hits like Snake have evolved from 8-bit arcade cabinets and early mobile phones to modern web experiences.</p>
+          <div>
+            <a href="evolution-of-arcade-games.html" class="read-more-link">Read Article <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Blog Post 4 -->
+      <article class="blog-card">
+        <a href="brain-benefits-puzzle-games.html" aria-label="Read How Puzzle Games Improve Cognitive Health">
+          <img src="../assets/blog/puzzle-brain.png" alt="Brain puzzle games" class="blog-card-img" />
+        </a>
+        <div class="blog-card-content">
+          <div class="blog-meta">
+            <span>May 15, 2026</span>
+            <span>Health & Focus</span>
+          </div>
+          <a href="brain-benefits-puzzle-games.html" class="blog-card-title">How Puzzle Games Improve Cognitive Health and Focus</a>
+          <p class="blog-card-excerpt">Science shows that playing puzzle games like 2048 and Memory Match can boost memory retention and problem-solving skills.</p>
+          <div>
+            <a href="brain-benefits-puzzle-games.html" class="read-more-link">Read Article <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="../assets/logo.png" alt="Ductgames" class="footer-logo-img" />
+      <p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p>
+    </div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="../index.html">All Games</a></li><li><a href="../games/tictactoe/index.html">Tic Tac Toe</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="index.html">Blog</a></li><li><a href="../pages/about.html">About Us</a></li><li><a href="../pages/contact.html">Contact</a></li><li><a href="../pages/privacy-policy.html">Privacy Policy</a></li><li><a href="../pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Ductgames. All rights reserved.</p>
+    <div class="footer-links"><a href="../pages/privacy-policy.html">Privacy Policy</a><a href="../pages/terms.html">Terms</a><a href="../pages/about.html">About</a><a href="../pages/contact.html">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('header-search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.value.trim()) window.location.href = `../search.html?q=${encodeURIComponent(e.target.value.trim())}`;
+});
+// Mobile menu toggle
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const mainNav = document.getElementById('main-nav');
+mobileMenuBtn.addEventListener('click', () => {
+  const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
+  mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
+  mainNav.style.display = isExpanded ? 'none' : 'flex';
+  if (!isExpanded) {
+    mainNav.style.flexDirection = 'column';
+    mainNav.style.position = 'absolute';
+    mainNav.style.top = '64px';
+    mainNav.style.left = '0';
+    mainNav.style.right = '0';
+    mainNav.style.background = '#fff';
+    mainNav.style.padding = '12px 24px';
+    mainNav.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
+    mainNav.style.zIndex = '99';
+  }
+});
+</script>
+</body>
+</html>
