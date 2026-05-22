@@ -1,9 +1,13 @@
 User-agent: *
 Allow: /
 
-# Disallow admin or any internal folders if added later
+# Disallow thin / dynamic content pages
+Disallow: /search.html
 Disallow: /admin/
 Disallow: /private/
+
+# Crawl delay for polite bots
+Crawl-delay: 10
 
 # Sitemap location
 Sitemap: https://ductgames.com/sitemap.xml
