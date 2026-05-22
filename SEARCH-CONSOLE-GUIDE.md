@@ -1,80 +1,95 @@
-# Google Search Console & SEMrush — Connection Guide
+# Google Search Console — Complete Setup & URL Removal Guide
 
-## Step 1: Google Search Console
+## ⚠️ URGENT: Remove Broken URLs from Google Index
 
-### Add Your Property
+### Step 1: Verify Site in Google Search Console
 1. Go to [https://search.google.com/search-console](https://search.google.com/search-console)
-2. Click **"Add property"** → choose **"Domain"** → type `ductgames.com` → Continue
-3. They will show you an HTML tag like:
-   ```html
-   <meta name="google-site-verification" content="abc123XYZ..." />
-   ```
-4. Open `/Users/shivampandey/Downloads/Ductgames/index.html`
-5. Find this line:
-   ```html
-   <meta name="google-site-verification" content="PASTE_YOUR_VERIFICATION_CODE_HERE" />
-   ```
-6. Replace `PASTE_YOUR_VERIFICATION_CODE_HERE` with the code Google gave you
-7. Save → push to GitHub → wait 1–2 minutes for the site to deploy
-8. Back in Search Console, click **"Verify"**
+2. Click **"Add property"** → choose **"URL prefix"** → enter `https://ductgames.com/` → Continue
+3. Choose **"HTML tag"** verification method
+4. Copy the meta tag (looks like `<meta name="google-site-verification" content="abc123...">`)
+5. Open `/Users/shivampandey/Downloads/Ductgames/index.html`
+6. Find: `<meta name="google-site-verification" content="PASTE_YOUR_VERIFICATION_CODE_HERE" />`
+7. Replace `PASTE_YOUR_VERIFICATION_CODE_HERE` with your actual code
+8. Push to GitHub (wait ~2 mins for deploy)
+9. Click **"Verify"** in Search Console
 
-### Submit Sitemap
-After verifying:
-1. In Search Console, go to **Sitemaps** (left sidebar)
+---
+
+## 🗑️ Remove Broken URLs from Google (Priority!)
+
+After verifying, do this for **both** broken URLs:
+
+### URL 1: `https://ductgames.com/new-games`
+### URL 2: `https://ductgames.com/game/cool-math-games-for-kids`
+
+**Steps:**
+1. In Search Console left sidebar → **"Removals"** (under Index)
+2. Click **"New Request"**
+3. Enter the full URL (e.g. `https://ductgames.com/new-games`)
+4. Select **"Remove this URL only"**
+5. Click **"Next"** → **"Submit Request"**
+6. Repeat for the second URL
+
+> ℹ️ **Note:** The redirect pages + `noindex` meta tags + `robots.txt` blocks have already been deployed. Google will stop crawling these URLs within 1–2 weeks. The URL removal tool accelerates this to within 24–48 hours.
+
+---
+
+## 📊 Submit Sitemap
+1. In Search Console → **"Sitemaps"** (left sidebar)
 2. Enter: `https://ductgames.com/sitemap.xml`
-3. Click **Submit**
+3. Click **"Submit"**
 
 ---
 
-## Step 2: Google Trends
-No code changes needed. Use Google Trends to research keywords:
-- Go to [https://trends.google.com](https://trends.google.com)
-- Search: `HTML5 games`, `free browser games`, `play games online free`
-- Use "Related queries" to find rising keywords to add to your content
+## 🔍 Request Indexing for New Pages
+After submitting the sitemap, also request indexing for key pages:
+1. In Search Console → **"URL Inspection"**
+2. Enter: `https://ductgames.com/`
+3. Click **"Request Indexing"**
+4. Repeat for each game URL:
+   - `https://ductgames.com/games/snake/index.html`
+   - `https://ductgames.com/games/tictactoe/index.html`
+   - `https://ductgames.com/games/memory/index.html`
+   - `https://ductgames.com/games/2048/index.html`
 
 ---
 
-## Step 3: SEMrush (Optional but Powerful)
+## 📈 SEMrush Keyword Setup
 1. Sign up at [https://www.semrush.com](https://www.semrush.com) (free tier available)
-2. Go to **"Domain Overview"** → type `ductgames.com`
-3. Use **"Keyword Magic Tool"** to find keywords like:
-   - `free HTML5 games` — search volume, difficulty
-   - `play games online no download`
-   - `best browser games 2025`
-4. Use **"On Page SEO Checker"** to get page-specific recommendations
+2. Go to **"Domain Overview"** → enter `ductgames.com`
+3. Use **"Keyword Magic Tool"** → search `free HTML5 games`
+4. Filter by: Difficulty < 50, Volume > 500
+5. Top keywords to target:
+   - `free html5 games` (high volume, medium difficulty)
+   - `play snake game online` 
+   - `tic tac toe online`
+   - `2048 game online free`
+   - `memory match game`
+   - `free browser games no download`
 
 ---
 
-## Step 4: Bing Webmaster Tools (Bonus)
-Don't forget Bing — it powers DuckDuckGo too!
+## 📊 Bing Webmaster Tools (Bonus — powers DuckDuckGo too)
 1. Go to [https://www.bing.com/webmasters](https://www.bing.com/webmasters)
-2. Import from Google Search Console (1-click if GSC is connected)
-3. Submit your sitemap: `https://ductgames.com/sitemap.xml`
+2. Sign in with Microsoft account
+3. Click **"Import from Google Search Console"** (fastest method)
+4. Submit sitemap: `https://ductgames.com/sitemap.xml`
 
 ---
 
-## Keywords Already Added to Your Site
-Your `index.html` now includes these keywords in meta tags + content:
+## 🎯 Keywords Already in Your Site
 
-| Keyword | Type |
-|---------|------|
-| free online games | Primary |
-| HTML5 games | Primary |
-| browser games | Primary |
-| no download games | Long-tail |
-| free games online | Primary |
-| play games online free | Long-tail |
-| HTML5 arcade games | Category |
-| puzzle games online | Category |
-| snake game online | Game-specific |
-| 2048 game | Game-specific |
-| memory match game | Game-specific |
-| tic tac toe online | Game-specific |
-| best free browser games | Comparison |
-| games like Poki | Competitor |
-| unblocked games | Long-tail |
-| instant play games | Feature |
-| kids games online free | Audience |
-| free casual games | Category |
-| online strategy games | Category |
-| retro browser games | Niche |
+| Keyword | Where Used |
+|---------|------------|
+| free online games | meta keywords, h2, body |
+| HTML5 games | title, meta, body |
+| browser games no download | meta, body |
+| snake game online | JSON-LD, body |
+| tic tac toe online | JSON-LD, body |
+| 2048 game | JSON-LD, body |
+| memory match game | JSON-LD, body |
+| games like Poki | meta keywords |
+| unblocked games | meta keywords |
+| free casual games | meta keywords |
+| kids games online free | meta keywords |
+| best free browser games | meta keywords |
