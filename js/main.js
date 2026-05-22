@@ -944,3 +944,44 @@ function showToast(msg) {
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
+
+// ═══════════════════════════════════════════════
+// FEATURED HERO CARD CANVAS PREVIEWS (auto-start)
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initFeaturedPreviews();
+});
+
+function initFeaturedPreviews() {
+  // TTT featured canvas
+  const tttCanvas = document.getElementById('fhc-canvas-ttt');
+  if (tttCanvas) {
+    const state = tttPreview(tttCanvas.width, tttCanvas.height);
+    let frame = 0;
+    function loop() {
+      const ctx = tttCanvas.getContext('2d');
+      ctx.clearRect(0, 0, tttCanvas.width, tttCanvas.height);
+      state.draw(ctx, frame, tttCanvas.width, tttCanvas.height);
+      state.update(frame);
+      frame++;
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }
+
+  // Snake featured canvas
+  const snakeCanvas = document.getElementById('fhc-canvas-snake');
+  if (snakeCanvas) {
+    const state = snakePreview(snakeCanvas.width, snakeCanvas.height);
+    let frame = 0;
+    function loop() {
+      const ctx = snakeCanvas.getContext('2d');
+      ctx.clearRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+      state.draw(ctx, frame, snakeCanvas.width, snakeCanvas.height);
+      state.update(frame);
+      frame++;
+      requestAnimationFrame(loop);
+    }
+    loop();
+  }
+}

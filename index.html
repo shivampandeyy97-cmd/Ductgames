@@ -218,30 +218,73 @@
       <span>Advertisement</span>
     </div>
 
-    <!-- ─── FEATURED GAMES ─── -->
+    <!-- ─── FEATURED GAMES — BIG HERO CARDS ─── -->
     <div class="featured-grid">
-      <div class="featured-banner" aria-label="Featured Game">
-        <div class="featured-banner-content">
-          <div class="featured-label">⭐ Featured Game</div>
-          <h2>Tic Tac Toe</h2>
-          <p>Challenge the AI in this classic X &amp; O strategy game. Two difficulty levels!</p>
-          <a href="games/tictactoe/index.html" class="btn-primary" id="featured-play-ttt">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Play Now
-          </a>
+
+      <!-- Tic Tac Toe Hero Card -->
+      <a href="games/tictactoe/index.html" class="featured-hero-card featured-hero-card--ttt" id="featured-card-ttt" aria-label="Play Tic Tac Toe — Featured Game">
+        <div class="fhc-orbs" aria-hidden="true">
+          <span class="fhc-orb fhc-orb-1"></span>
+          <span class="fhc-orb fhc-orb-2"></span>
+          <span class="fhc-orb fhc-orb-3"></span>
         </div>
-      </div>
-      <div class="featured-banner featured-banner--green" aria-label="Featured Game">
-        <div class="featured-banner-content">
-          <div class="featured-label featured-label--teal">🔥 Hot Game</div>
-          <h2>Snake</h2>
-          <p>Classic arcade action — eat, grow, and dodge the walls. Multiple speed modes!</p>
-          <a href="games/snake/index.html" class="btn-primary btn-primary--teal" id="featured-play-snake">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Play Now
-          </a>
+        <div class="fhc-shine" aria-hidden="true"></div>
+        <div class="fhc-content">
+          <div class="fhc-badge">
+            <span class="fhc-badge-dot"></span>⭐ Featured Game
+          </div>
+          <h2 class="fhc-title">Tic Tac Toe</h2>
+          <p class="fhc-desc">Challenge the AI in this classic X &amp; O strategy game. Can you outsmart the computer?</p>
+          <div class="fhc-stats">
+            <span>♟️ 2 Difficulty Levels</span>
+            <span>⚡ Instant Play</span>
+            <span>🆓 100% Free</span>
+          </div>
+          <div class="fhc-cta" id="featured-play-ttt">
+            <span class="fhc-cta-ring"></span>
+            <span class="fhc-cta-ring fhc-cta-ring-2"></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play Now — It's Free!
+          </div>
         </div>
-      </div>
+        <div class="fhc-preview-wrap" aria-hidden="true">
+          <canvas class="fhc-canvas" id="fhc-canvas-ttt" width="300" height="220"></canvas>
+          <div class="fhc-preview-label">🎮 Live Preview</div>
+        </div>
+      </a>
+
+      <!-- Snake Hero Card -->
+      <a href="games/snake/index.html" class="featured-hero-card featured-hero-card--snake" id="featured-card-snake" aria-label="Play Snake — Hot Game">
+        <div class="fhc-orbs" aria-hidden="true">
+          <span class="fhc-orb fhc-orb-1"></span>
+          <span class="fhc-orb fhc-orb-2"></span>
+          <span class="fhc-orb fhc-orb-3"></span>
+        </div>
+        <div class="fhc-shine" aria-hidden="true"></div>
+        <div class="fhc-content">
+          <div class="fhc-badge fhc-badge--hot">
+            <span class="fhc-badge-dot fhc-badge-dot--hot"></span>🔥 Hot Game
+          </div>
+          <h2 class="fhc-title">Snake</h2>
+          <p class="fhc-desc">Classic arcade action — eat, grow, dodge the walls. How high can you score?</p>
+          <div class="fhc-stats">
+            <span>🚀 3 Speed Modes</span>
+            <span>🏆 High Score</span>
+            <span>🆓 100% Free</span>
+          </div>
+          <div class="fhc-cta fhc-cta--green" id="featured-play-snake">
+            <span class="fhc-cta-ring fhc-cta-ring--green"></span>
+            <span class="fhc-cta-ring fhc-cta-ring--green fhc-cta-ring-2"></span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play Now — It's Free!
+          </div>
+        </div>
+        <div class="fhc-preview-wrap" aria-hidden="true">
+          <canvas class="fhc-canvas" id="fhc-canvas-snake" width="300" height="220"></canvas>
+          <div class="fhc-preview-label">🎮 Live Preview</div>
+        </div>
+      </a>
+
     </div>
 
     <!-- ─── CATEGORY TABS ─── -->
