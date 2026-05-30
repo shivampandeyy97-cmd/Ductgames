@@ -94,3 +94,26 @@ After submitting the sitemap, also request indexing for key pages:
 | free casual games | meta keywords |
 | kids games online free | meta keywords |
 | best free browser games | meta keywords |
+
+---
+
+## 🛡️ DNS & SPF Record Setup (Fix for SEOSiteCheckup Audits)
+
+An **SPF (Sender Policy Framework)** record is a TXT record added to your domain registrar (e.g., GoDaddy, Namecheap, Cloudflare) that authorizes which servers are allowed to send emails on behalf of `ductgames.com`. Even if your website is static, tools like SEOSiteCheckup flag a domain as having a critical SEO/security vulnerability if it lacks this record.
+
+### How to Fix It (Step-by-Step)
+
+To resolve the SPF record warning and secure your domain:
+
+1. **Log in to your Domain Registrar:** Access your account on GoDaddy, Namecheap, Cloudflare, or wherever your domain DNS is managed.
+2. **Open DNS Settings:** Navigate to the **DNS Management** or **Advanced DNS** panel for `ductgames.com`.
+3. **Add a New Record:**
+   * **Type:** `TXT`
+   * **Host/Name:** `@` (or leave it blank, depending on your provider)
+   * **Value:** 
+     * *If you use Google Workspace (Gmail) for custom email:* 
+       `v=spf1 include:_spf.google.com ~all`
+     * *If you do not send emails from your domain at all (Static Fail-safe):* 
+       `v=spf1 -all`
+4. **Save the Record:** Click save. 
+5. **Propagation:** Note that DNS changes can take **24 to 48 hours** to propagate globally. Once propagated, the SEOSiteCheckup error will clear and show a perfect score for SPF!
