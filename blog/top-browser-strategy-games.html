@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -10,11 +17,30 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top Strategy Games You Can Play Instantly in Your Browser | Ductgames</title>
-  <meta name="description" content="Discover the best strategy games to test your intellect online. Play classic board games and puzzle strategies directly in your browser." />
-  <meta name="keywords" content="browser strategy games, free online chess, tic tac toe strategy, HTML5 strategy games, brain games" />
+  <title>Top Web Browser Strategy Games to Play in 2026 | Ductgames Blog</title>
+  <meta name="description" content="Discover the top free strategy web browser games to play. Challenge your brain with classic tactical games, puzzle strategy, and tactical tile sliding." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/blog/top-browser-strategy-games.html" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Top Web Browser Strategy Games to Play in 2026 | Ductgames Blog" />
+  <meta property="og:description" content="Discover the top free strategy web browser games to play. Challenge your brain with classic tactical games, puzzle strategy, and tactical tile sliding." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ductgames.com/blog/top-browser-strategy-games.html" />
+  <meta property="og:image" content="https://ductgames.com/assets/blog/strategy-games.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Strategy Games" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Top Web Browser Strategy Games to Play in 2026 | Ductgames Blog" />
+  <meta name="twitter:description" content="Discover the top free strategy web browser games to play. Challenge your brain with classic tactical games, puzzle strategy, and tactical tile sliding." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/blog/strategy-games.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
   <style>

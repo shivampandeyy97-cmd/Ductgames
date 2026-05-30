@@ -17,11 +17,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page Not Found – 404 | Ductgames</title>
-  <meta name="robots" content="noindex, follow" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="refresh" content="5; url=https://ductgames.com/" />
   <meta name="description" content="This page could not be found. Return to Ductgames for free HTML5 games online." />
   <link rel="canonical" href="https://ductgames.com/" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
   <style>
     .error-page {
       min-height: 80vh;
@@ -62,7 +63,7 @@
     .error-desc {
       font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       line-height: 1.6;
     }
     .error-actions {
@@ -100,9 +101,9 @@
 
 <header class="site-header" role="banner">
   <div class="header-inner">
-    <a href="index.html" class="logo" aria-label="Ductgames Home">
-      <img src="assets/logo.png" alt="Ductgames Logo" class="logo-img logo-light" onerror="this.style.display='none'"/>
-      <img src="assets/logo.png" alt="Ductgames Logo" class="logo-img logo-dark" onerror="this.style.display='none'" style="filter:brightness(0) invert(1);"/>
+    <a href="/" class="logo" aria-label="Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img logo-light" onerror="this.style.display='none'"/>
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img logo-dark" onerror="this.style.display='none'" style="filter:brightness(0) invert(1);"/>
       <span class="logo-text">Ductgames</span>
     </a>
     <div class="header-actions" style="margin-left:auto;">
@@ -125,27 +126,30 @@
       <div class="error-code">404</div>
       <h1 class="error-title">Oops! Level Not Found</h1>
       <p class="error-desc">This page doesn't exist or was moved. But don't worry — there are plenty of free games waiting for you!</p>
+      <p id="redirect-msg" style="font-size:0.95rem; font-weight:600; color:var(--primary); margin-top:-12px; margin-bottom:32px;">
+        Redirecting you to the homepage in <span id="countdown" style="font-weight: 800; font-size:1.1rem; color:var(--primary);">5</span> seconds...
+      </p>
 
       <div class="error-actions">
-        <a href="index.html" class="btn-primary">🏠 Back to Games</a>
-        <a href="blog/index.html" class="btn-secondary">📖 Read Blog</a>
+        <a href="/" class="btn-primary">🏠 Back to Games</a>
+        <a href="/blog/" class="btn-secondary">📖 Read Blog</a>
       </div>
 
       <p style="font-size:0.85rem; font-weight:700; color:var(--text-muted); margin-bottom:16px; text-transform:uppercase; letter-spacing:1px;">Play These Instead</p>
       <div class="error-games">
-        <a href="games/tictactoe/index.html" class="error-game-link">
+        <a href="/games/tictactoe/" class="error-game-link">
           <span class="game-em">✕</span>
           <span class="game-n">Tic Tac Toe</span>
         </a>
-        <a href="games/snake/index.html" class="error-game-link">
+        <a href="/games/snake/" class="error-game-link">
           <span class="game-em">🐍</span>
           <span class="game-n">Snake</span>
         </a>
-        <a href="games/memory/index.html" class="error-game-link">
+        <a href="/games/memory/" class="error-game-link">
           <span class="game-em">🃏</span>
           <span class="game-n">Memory Match</span>
         </a>
-        <a href="games/2048/index.html" class="error-game-link">
+        <a href="/games/2048/" class="error-game-link">
           <span class="game-em">🔢</span>
           <span class="game-n">2048</span>
         </a>
@@ -158,9 +162,9 @@
   <div class="footer-bottom" style="max-width:1200px; margin:0 auto; border-top:none; padding:24px;">
     <p>© 2026 Ductgames. All rights reserved.</p>
     <div class="footer-links">
-      <a href="pages/privacy-policy.html">Privacy Policy</a>
-      <a href="pages/terms.html">Terms</a>
-      <a href="pages/contact.html">Contact</a>
+      <a href="/pages/privacy-policy.html">Privacy Policy</a>
+      <a href="/pages/terms.html">Terms</a>
+      <a href="/pages/contact.html">Contact</a>
     </div>
   </div>
 </footer>
@@ -174,8 +178,23 @@
       var cur = document.documentElement.getAttribute('data-theme') || 'light';
       var next = cur === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('dg_theme', next); } catch(e) {}
+      try { localStorage.setItem('dg_theme', next); } catch(e){}
     });
+  })();
+
+  // 5-second auto-redirect countdown
+  (function(){
+    var seconds = 5;
+    var el = document.getElementById('countdown');
+    if (!el) return;
+    var interval = setInterval(function() {
+      seconds--;
+      el.textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = "/";
+      }
+    }, 1000);
   })();
 </script>
 </body>

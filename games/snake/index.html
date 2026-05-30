@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-6YB7SNGH6T');
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Snake – Play Free Online | Ductgames</title>
-  <meta name="description" content="Play Snake free online at Ductgames. Classic arcade snake game — eat, grow, avoid walls! No download, no sign-up required." />
+  <meta name="description" content="Play Snake free online at Ductgames. Classic arcade snake game — eat the red food, grow longer, and avoid walls! No download, no sign-up required." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/games/snake/" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Snake – Play Free Online | Ductgames" />
+  <meta property="og:description" content="Play Snake free online at Ductgames. Classic arcade snake game — eat the red food, grow longer, and avoid walls! No download, no sign-up required." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/games/snake/" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Snake – Free HTML5 Game | Ductgames" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Snake – Play Free Online | Ductgames" />
+  <meta name="twitter:description" content="Play Snake free online at Ductgames. Classic arcade snake game — eat the red food, grow longer, and avoid walls! No download, no sign-up required." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="icon" href="../../assets/favicon.ico" type="image/x-icon" />
   <style>

@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-6YB7SNGH6T');
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy | Ductgames</title>
-  <meta name="description" content="Read Ductgames privacy policy to understand how we collect, use, and protect your personal information." />
+  <meta name="description" content="Read the privacy policy of Ductgames. Understand how we handle player privacy, cookies, analytics data, and browser advertising standards." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/pages/privacy-policy.html" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Privacy Policy | Ductgames" />
+  <meta property="og:description" content="Read the privacy policy of Ductgames. Understand how we handle player privacy, cookies, analytics data, and browser advertising standards." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/pages/privacy-policy.html" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Privacy Policy | Ductgames" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Privacy Policy | Ductgames" />
+  <meta name="twitter:description" content="Read the privacy policy of Ductgames. Understand how we handle player privacy, cookies, analytics data, and browser advertising standards." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
 </head>

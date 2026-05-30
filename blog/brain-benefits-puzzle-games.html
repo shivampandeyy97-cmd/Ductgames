@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -10,11 +17,30 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How Puzzle Games Improve Cognitive Health and Focus | Ductgames</title>
-  <meta name="description" content="Science shows that playing puzzle games like 2048 and Memory Match can boost memory retention and problem-solving skills." />
-  <meta name="keywords" content="puzzle games online, brain training games, 2048 puzzle, memory match, cognitive health gaming" />
+  <title>Amazing Brain Benefits of Playing Puzzle Games Daily | Ductgames Blog</title>
+  <meta name="description" content="Discover how playing classic puzzle games daily can improve memory, boost recall speed, enhance problem-solving, and keep your cognitive mind sharp." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/blog/brain-benefits-puzzle-games.html" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Amazing Brain Benefits of Playing Puzzle Games Daily | Ductgames Blog" />
+  <meta property="og:description" content="Discover how playing classic puzzle games daily can improve memory, boost recall speed, enhance problem-solving, and keep your cognitive mind sharp." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ductgames.com/blog/brain-benefits-puzzle-games.html" />
+  <meta property="og:image" content="https://ductgames.com/assets/blog/puzzle-brain.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Brain benefits puzzle games" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Amazing Brain Benefits of Playing Puzzle Games Daily | Ductgames Blog" />
+  <meta name="twitter:description" content="Discover how playing classic puzzle games daily can improve memory, boost recall speed, enhance problem-solving, and keep your cognitive mind sharp." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/blog/puzzle-brain.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
   <style>

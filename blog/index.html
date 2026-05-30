@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
@@ -11,11 +17,30 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ductgames Blog – HTML5 Gaming News & Strategies</title>
-  <meta name="description" content="Read the latest news, strategies, and insights about free HTML5 browser games on the Ductgames blog. Learn how to master puzzle, strategy, and arcade games." />
-  <meta name="keywords" content="gaming blog, HTML5 games news, browser game strategy, retro arcade games, puzzle game benefits" />
+  <title>Ductgames Blog – Insights, History, and Future of HTML5 Gaming</title>
+  <meta name="description" content="Explore the Ductgames Blog for insightful articles on retro arcade history, the future of HTML5 web browser gaming, brain benefits of puzzle games, and top strategy titles." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/blog/" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Ductgames Blog – Insights, History, and Future of HTML5 Gaming" />
+  <meta property="og:description" content="Explore the Ductgames Blog for insightful articles on retro arcade history, the future of HTML5 web browser gaming, brain benefits of puzzle games, and top strategy titles." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/blog/" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Ductgames Blog" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Ductgames Blog – Insights, History, and Future of HTML5 Gaming" />
+  <meta name="twitter:description" content="Explore the Ductgames Blog for insightful articles on retro arcade history, the future of HTML5 web browser gaming, brain benefits of puzzle games, and top strategy titles." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
   <style>

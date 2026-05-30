@@ -1,18 +1,5 @@
 User-agent: *
 Allow: /
-
-# Disallow thin / dynamic content pages
 Disallow: /search.html
-Disallow: /admin/
-Disallow: /private/
 
-# Disallow old/stale URLs that were previously indexed as broken
-Disallow: /new-games/
-Disallow: /game/cool-math-games-for-kids/
-Disallow: /game/
-
-# Crawl delay for polite bots
-Crawl-delay: 10
-
-# Sitemap location
 Sitemap: https://ductgames.com/sitemap.xml

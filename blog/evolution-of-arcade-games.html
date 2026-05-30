@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -10,11 +17,30 @@
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Evolution of Classic Arcade Games | Ductgames</title>
-  <meta name="description" content="Discover how nostalgic hits like Snake have evolved from 8-bit arcade cabinets and early mobile phones to modern web experiences." />
-  <meta name="keywords" content="retro arcade games, play snake online, classic browser games, arcade evolution, 8-bit games" />
+  <title>The History and Evolution of Classic Arcade Games | Ductgames Blog</title>
+  <meta name="description" content="Take a nostalgic trip through the history of arcade gaming, from classic 1970s pixel cabinets to modern web-based retro revival games like Snake." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/blog/evolution-of-arcade-games.html" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="The History and Evolution of Classic Arcade Games | Ductgames Blog" />
+  <meta property="og:description" content="Take a nostalgic trip through the history of arcade gaming, from classic 1970s pixel cabinets to modern web-based retro revival games like Snake." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://ductgames.com/blog/evolution-of-arcade-games.html" />
+  <meta property="og:image" content="https://ductgames.com/assets/blog/retro-arcade.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Retro Arcade Evolution" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="The History and Evolution of Classic Arcade Games | Ductgames Blog" />
+  <meta name="twitter:description" content="Take a nostalgic trip through the history of arcade gaming, from classic 1970s pixel cabinets to modern web-based retro revival games like Snake." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/blog/retro-arcade.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
   <style>

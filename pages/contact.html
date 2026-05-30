@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-6YB7SNGH6T');
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact Us | Ductgames</title>
-  <meta name="description" content="Get in touch with the Ductgames team. We'd love to hear from you — send us your feedback, questions, or game suggestions." />
+  <title>Contact Us | Ductgames – Feedback and Support</title>
+  <meta name="description" content="Get in touch with the Ductgames team. Send us your feedback, game requests, support queries, or business inquiries directly." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://ductgames.com/pages/contact.html" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Contact Us | Ductgames – Feedback and Support" />
+  <meta property="og:description" content="Get in touch with the Ductgames team. Send us your feedback, game requests, support queries, or business inquiries directly." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/pages/contact.html" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Contact Ductgames" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Contact Us | Ductgames – Feedback and Support" />
+  <meta name="twitter:description" content="Get in touch with the Ductgames team. Send us your feedback, game requests, support queries, or business inquiries directly." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="icon" href="../assets/favicon.ico" type="image/x-icon" />
 </head>
