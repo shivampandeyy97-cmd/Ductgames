@@ -46,11 +46,12 @@ After submitting the sitemap, also request indexing for key pages:
 1. In Search Console → **"URL Inspection"**
 2. Enter: `https://ductgames.com/`
 3. Click **"Request Indexing"**
-4. Repeat for each game URL:
-   - `https://ductgames.com/games/snake/index.html`
-   - `https://ductgames.com/games/tictactoe/index.html`
-   - `https://ductgames.com/games/memory/index.html`
-   - `https://ductgames.com/games/2048/index.html`
+4. Repeat for each canonical game and blog URL:
+   - `https://ductgames.com/games/snake/`
+   - `https://ductgames.com/games/tictactoe/`
+   - `https://ductgames.com/games/memory/`
+   - `https://ductgames.com/games/2048/`
+   - `https://ductgames.com/blog/`
 
 ---
 
