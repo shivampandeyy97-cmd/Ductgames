@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1784776421772675"
+     crossorigin="anonymous"></script>
+
   <!-- ─── THEME: Apply before render to prevent flash ─── -->
   <script>
     (function(){
@@ -41,8 +45,10 @@
   <meta name="twitter:description" content="Play the classic 2048 number puzzle game free online at Ductgames. Slide numbered tiles to combine them and reach the 2048 tile. No sign-up required!" />
   <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
 
-  <link rel="stylesheet" href="../../css/style.css" />
-  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
   <style>
     /* ─── 2048 Tile Colors ─── */
     .score-cards { display:flex; gap:16px; width:100%; justify-content:center; flex-wrap:wrap; }
@@ -162,17 +168,17 @@
 <!-- ─── HEADER ─── -->
 <header class="site-header" role="banner">
   <div class="header-inner">
-    <a href="../../index.html" class="logo" aria-label="Back to Ductgames Home">
-      <img src="../../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+    <a href="/" class="logo" aria-label="Back to Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
       <span class="logo-text">Ductgames</span>
     </a>
     <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
-      <a href="../../index.html" class="nav-link">All Games</a>
-      <a href="../../index.html?cat=puzzle" class="nav-link active">Puzzle</a>
-      <a href="../../index.html?cat=arcade" class="nav-link">Arcade</a>
-      <a href="../../index.html?cat=strategy" class="nav-link">Strategy</a>
+      <a href="/" class="nav-link">All Games</a>
+      <a href="/?cat=puzzle" class="nav-link active">Puzzle</a>
+      <a href="/?cat=arcade" class="nav-link">Arcade</a>
+      <a href="/?cat=strategy" class="nav-link">Strategy</a>
     
-      <a href="../../blog/index.html" class="nav-link">Blog</a>
+      <a href="/blog/" class="nav-link">Blog</a>
     </nav>
     <div class="header-search" role="search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -192,9 +198,9 @@
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
       <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a><meta itemprop="position" content="1" /></li>
         <li>›</li>
-        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="../../index.html?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a><meta itemprop="position" content="2" /></li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a href="/?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a><meta itemprop="position" content="2" /></li>
         <li>›</li>
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">2048</span><meta itemprop="position" content="3" /></li>
       </ol>
@@ -295,15 +301,15 @@
 
         <div class="sidebar-card">
           <h3>🎮 Related Games</h3>
-          <a href="../tictactoe/index.html" class="related-game" style="text-decoration:none;">
+          <a href="/games/tictactoe/" class="related-game" style="text-decoration:none;">
             <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
             <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
           </a>
-          <a href="../snake/index.html" class="related-game" style="text-decoration:none;">
+          <a href="/games/snake/" class="related-game" style="text-decoration:none;">
             <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
             <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
           </a>
-          <a href="../memory/index.html" class="related-game" style="text-decoration:none;">
+          <a href="/games/memory/" class="related-game" style="text-decoration:none;">
             <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
             <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
           </a>
@@ -325,17 +331,17 @@
 <!-- FOOTER -->
 <footer class="site-footer" role="contentinfo">
   <div class="footer-inner">
-    <div class="footer-brand"><img src="../../assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
-    <div class="footer-col"><h4>Games</h4><ul><li><a href="../../index.html">All Games</a></li><li><a href="../../index.html?cat=puzzle">Puzzle</a></li><li><a href="../../index.html?cat=arcade">Arcade</a></li></ul></div>
-    <div class="footer-col"><h4>Company</h4><ul><li><a href="../../blog/index.html">Blog</a></li><li><a href="../../pages/about.html">About Us</a></li><li><a href="../../pages/contact.html">Contact</a></li><li><a href="../../pages/privacy-policy.html">Privacy Policy</a></li><li><a href="../../pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-brand"><img src="/assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="/">All Games</a></li><li><a href="/?cat=puzzle">Puzzle</a></li><li><a href="/?cat=arcade">Arcade</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="/blog/">Blog</a></li><li><a href="/pages/about.html">About Us</a></li><li><a href="/pages/contact.html">Contact</a></li><li><a href="/pages/privacy-policy.html">Privacy Policy</a></li><li><a href="/pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
     <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
   </div>
-  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="../../pages/privacy-policy.html">Privacy Policy</a><a href="../../pages/terms.html">Terms</a><a href="../../pages/about.html">About</a><a href="../../pages/contact.html">Contact</a></div></div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="/pages/privacy-policy.html">Privacy Policy</a><a href="/pages/terms.html">Terms</a><a href="/pages/about.html">About</a><a href="/pages/contact.html">Contact</a></div></div>
 </footer>
 
 <!-- Cookie Banner -->
 <div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
-  <p>🍪 We use cookies to improve your experience. <a href="../../pages/privacy-policy.html">Learn more</a>.</p>
+  <p>🍪 We use cookies to improve your experience. <a href="/pages/privacy-policy.html">Learn more</a>.</p>
   <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
 </div>
 
@@ -597,7 +603,7 @@ board2048.addEventListener('touchend', (e) => {
 document.getElementById('header-search-input').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     const q = e.target.value.trim();
-    if (q) window.location.href = `../../search.html?q=${encodeURIComponent(q)}`;
+    if (q) window.location.href = `/search.html?q=${encodeURIComponent(q)}`;
   }
 });
 

@@ -1,5 +1,14 @@
 User-agent: *
+Allow: /ads.txt
 Allow: /
 Disallow: /search.html
+
+User-agent: Mediapartners-Google
+Allow: /
+Allow: /ads.txt
+
+User-agent: Googlebot
+Allow: /
+Allow: /ads.txt
 
 Sitemap: https://ductgames.com/sitemap.xml

@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1784776421772675"
+     crossorigin="anonymous"></script>
+
   <!-- ─── THEME: Apply before render to prevent flash ─── -->
   <script>
     (function(){
@@ -41,8 +45,10 @@
   <meta name="twitter:description" content="Take a nostalgic trip through the history of arcade gaming, from classic 1970s pixel cabinets to modern web-based retro revival games like Snake." />
   <meta name="twitter:image" content="https://ductgames.com/assets/blog/retro-arcade.png" />
 
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="icon" href="../assets/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
   <style>
     .blog-article { max-width: 800px; margin: 40px auto; background: var(--bg-card); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--border); }
     .blog-hero-img { width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-md); margin-bottom: 24px; }
@@ -54,17 +60,17 @@
 
 <header class="site-header" role="banner">
   <div class="header-inner">
-    <a href="../index.html" class="logo" aria-label="Ductgames Home">
-      <img src="../assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+    <a href="/" class="logo" aria-label="Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
       <span class="logo-text">Ductgames</span>
     </a>
     <nav class="main-nav" id="main-nav" role="navigation">
-      <a href="../index.html" class="nav-link">All Games</a>
-      <a href="../index.html?cat=arcade" class="nav-link">Arcade</a>
-      <a href="index.html" class="nav-link active">Blog</a>
+      <a href="/" class="nav-link">All Games</a>
+      <a href="/?cat=arcade" class="nav-link">Arcade</a>
+      <a href="/blog/" class="nav-link active">Blog</a>
     </nav>
     <div class="header-actions">
-      <a href="../index.html" class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Play Games</a>
+      <a href="/" class="btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Play Games</a>
     </div>
   </div>
 </header>
@@ -73,14 +79,14 @@
   <div class="container">
     <nav aria-label="Breadcrumb" style="padding:16px 0;">
       <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;">
-        <li><a href="../index.html" style="color:var(--primary);">Home</a></li><li>›</li>
-        <li><a href="index.html" style="color:var(--primary);">Blog</a></li><li>›</li>
+        <li><a href="/" style="color:var(--primary);">Home</a></li><li>›</li>
+        <li><a href="/blog/" style="color:var(--primary);">Blog</a></li><li>›</li>
         <li>Evolution of Arcade Games</li>
       </ol>
     </nav>
 
     <article class="blog-article">
-      <img src="../assets/blog/retro-arcade.png" alt="Retro Arcade Evolution" class="blog-hero-img" />
+      <img src="/assets/blog/retro-arcade.png" alt="Retro Arcade Evolution" class="blog-hero-img" />
       <h1 style="font-size: 2.2rem; margin-bottom: 12px; color: var(--text-main);">The Evolution of Classic Arcade Games: From Retro to Browser</h1>
       <div style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 16px;">
         Published on May 18, 2026 • By Ductgames Editorial Team
@@ -93,7 +99,7 @@
         <p>The original arcade era was characterized by hardware limitations that paradoxically fueled immense creativity. Developers had to rely on simple mechanics that were easy to learn but nearly impossible to master. This design philosophy birthed legends. The core gameplay loop of "just one more try" was perfected during this era.</p>
 
         <h2>The Mobile Revolution: The Snake Phenomenon</h2>
-        <p>While arcades eventually faded, the arcade spirit migrated to early mobile phones. The most famous example is undoubtedly <a href="../games/snake/index.html">Snake</a>. Pre-installed on millions of Nokia phones in the late 1990s, Snake became a global obsession. It perfectly captured the arcade philosophy: simple controls (four directions), a clear goal (eat the food), and an escalating difficulty curve (the snake gets longer and faster).</p>
+        <p>While arcades eventually faded, the arcade spirit migrated to early mobile phones. The most famous example is undoubtedly <a href="/games/snake/">Snake</a>. Pre-installed on millions of Nokia phones in the late 1990s, Snake became a global obsession. It perfectly captured the arcade philosophy: simple controls (four directions), a clear goal (eat the food), and an escalating difficulty curve (the snake gets longer and faster).</p>
 
         <h2>The HTML5 Arcade Renaissance</h2>
         <p>Today, we don't need dedicated arcade cabinets or clunky feature phones to enjoy these classics. HTML5 technology has allowed developers to recreate the exact feel of retro arcade games directly in the browser. At Ductgames, our version of Snake features the same addictive gameplay you remember, but enhanced with modern glowing vector graphics, responsive controls for touchscreens, and varying difficulty modes.</p>
@@ -106,7 +112,7 @@
 
 <footer class="site-footer" role="contentinfo">
   <div class="footer-inner">
-    <div class="footer-brand"><img src="../assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games.</p></div>
+    <div class="footer-brand"><img src="/assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games.</p></div>
   </div>
 </footer>
 </body>

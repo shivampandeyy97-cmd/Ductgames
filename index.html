@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1784776421772675"
+     crossorigin="anonymous"></script>
+
   <!-- ─── THEME: Apply before render to prevent flash ─── -->
   <script>
     (function(){
@@ -105,28 +109,28 @@
         "@type": "ListItem",
         "position": 1,
         "name": "Tic Tac Toe",
-        "url": "https://ductgames.com/games/tictactoe/index.html",
+        "url": "https://ductgames.com/games/tictactoe/",
         "description": "Classic 3×3 strategy game. Play against the computer!"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Snake",
-        "url": "https://ductgames.com/games/snake/index.html",
+        "url": "https://ductgames.com/games/snake/",
         "description": "Classic arcade snake game. Eat, grow, and avoid hitting the walls!"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Memory Match",
-        "url": "https://ductgames.com/games/memory/index.html",
+        "url": "https://ductgames.com/games/memory/",
         "description": "Test your memory by matching pairs of cards"
       },
       {
         "@type": "ListItem",
         "position": 4,
         "name": "2048",
-        "url": "https://ductgames.com/games/2048/index.html",
+        "url": "https://ductgames.com/games/2048/",
         "description": "Slide tiles and combine numbers to reach 2048!"
       }
     ]
@@ -140,27 +144,28 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com" />
 
   <!-- ─── ASSETS ─── -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="assets/favicon.png" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
 </head>
 <body>
 
 <!-- ─── HEADER ─── -->
 <header class="site-header" role="banner">
   <div class="header-inner">
-    <a href="index.html" class="logo" aria-label="Ductgames Home">
-      <img src="assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+    <a href="/" class="logo" aria-label="Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
       <span class="logo-text">Ductgames</span>
     </a>
 
     <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
-      <a href="index.html" class="nav-link active" data-cat="all">All Games</a>
-      <a href="index.html?cat=puzzle" class="nav-link" data-cat="puzzle">Puzzle</a>
-      <a href="index.html?cat=arcade" class="nav-link" data-cat="arcade">Arcade</a>
-      <a href="index.html?cat=strategy" class="nav-link" data-cat="strategy">Strategy</a>
-      <a href="index.html?cat=sports" class="nav-link" data-cat="sports">Sports</a>
-      <a href="blog/index.html" class="nav-link">Blog</a>
+      <a href="/" class="nav-link active" data-cat="all">All Games</a>
+      <a href="/?cat=puzzle" class="nav-link" data-cat="puzzle">Puzzle</a>
+      <a href="/?cat=arcade" class="nav-link" data-cat="arcade">Arcade</a>
+      <a href="/?cat=strategy" class="nav-link" data-cat="strategy">Strategy</a>
+      <a href="/?cat=sports" class="nav-link" data-cat="sports">Sports</a>
+      <a href="/blog/" class="nav-link">Blog</a>
     </nav>
 
     <div class="header-search" role="search">
@@ -222,7 +227,7 @@
     <div class="featured-grid">
 
       <!-- Tic Tac Toe Hero Card -->
-      <a href="games/tictactoe/index.html" class="featured-hero-card featured-hero-card--ttt" id="featured-card-ttt" aria-label="Play Tic Tac Toe — Featured Game">
+      <a href="/games/tictactoe/" class="featured-hero-card featured-hero-card--ttt" id="featured-card-ttt" aria-label="Play Tic Tac Toe — Featured Game">
         <div class="fhc-orbs" aria-hidden="true">
           <span class="fhc-orb fhc-orb-1"></span>
           <span class="fhc-orb fhc-orb-2"></span>
@@ -254,7 +259,7 @@
       </a>
 
       <!-- Snake Hero Card -->
-      <a href="games/snake/index.html" class="featured-hero-card featured-hero-card--snake" id="featured-card-snake" aria-label="Play Snake — Hot Game">
+      <a href="/games/snake/" class="featured-hero-card featured-hero-card--snake" id="featured-card-snake" aria-label="Play Snake — Hot Game">
         <div class="fhc-orbs" aria-hidden="true">
           <span class="fhc-orb fhc-orb-1"></span>
           <span class="fhc-orb fhc-orb-2"></span>
@@ -355,7 +360,7 @@
 <footer class="site-footer" role="contentinfo">
   <div class="footer-inner">
     <div class="footer-brand">
-      <img src="assets/logo.png" alt="Ductgames" class="footer-logo-img" />
+      <img src="/assets/logo.png" alt="Ductgames" class="footer-logo-img" />
       <p>Your favourite destination for free HTML5 browser games. Play instantly — no downloads, no sign-up required.</p>
       <div class="footer-social" aria-label="Social media links">
         <a href="https://twitter.com/ductgames" class="social-btn" aria-label="Twitter" rel="noopener noreferrer" target="_blank">𝕏</a>
@@ -367,33 +372,33 @@
     <div class="footer-col">
       <h4>Games</h4>
       <ul>
-        <li><a href="games/tictactoe/index.html">Tic Tac Toe</a></li>
-        <li><a href="games/snake/index.html">Snake</a></li>
-        <li><a href="games/memory/index.html">Memory Match</a></li>
-        <li><a href="games/2048/index.html">2048</a></li>
-        <li><a href="index.html?cat=puzzle">Puzzle Games</a></li>
-        <li><a href="index.html?cat=arcade">Arcade Games</a></li>
+        <li><a href="/games/tictactoe/">Tic Tac Toe</a></li>
+        <li><a href="/games/snake/">Snake</a></li>
+        <li><a href="/games/memory/">Memory Match</a></li>
+        <li><a href="/games/2048/">2048</a></li>
+        <li><a href="/?cat=puzzle">Puzzle Games</a></li>
+        <li><a href="/?cat=arcade">Arcade Games</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Company</h4>
       <ul>
-        <li><a href="pages/about.html">About Us</a></li>
-        <li><a href="pages/contact.html">Contact Us</a></li>
-        <li><a href="pages/privacy-policy.html">Privacy Policy</a></li>
-        <li><a href="pages/terms.html">Terms &amp; Conditions</a></li>
-        <li><a href="blog/index.html">Blog</a></li>
+        <li><a href="/pages/about.html">About Us</a></li>
+        <li><a href="/pages/contact.html">Contact Us</a></li>
+        <li><a href="/pages/privacy-policy.html">Privacy Policy</a></li>
+        <li><a href="/pages/terms.html">Terms &amp; Conditions</a></li>
+        <li><a href="/blog/">Blog</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Support</h4>
       <ul>
-        <li><a href="pages/contact.html">Help Center</a></li>
+        <li><a href="/pages/contact.html">Help Center</a></li>
         <li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li>
-        <li><a href="pages/privacy-policy.html#cookies">Cookie Policy</a></li>
-        <li><a href="pages/about.html">Our Mission</a></li>
+        <li><a href="/pages/privacy-policy.html#cookies">Cookie Policy</a></li>
+        <li><a href="/pages/about.html">Our Mission</a></li>
       </ul>
     </div>
   </div>
@@ -401,17 +406,17 @@
   <div class="footer-bottom">
     <p>© 2026 Ductgames. All rights reserved. Free HTML5 Games Online.</p>
     <div class="footer-links">
-      <a href="pages/privacy-policy.html">Privacy Policy</a>
-      <a href="pages/terms.html">Terms &amp; Conditions</a>
-      <a href="pages/about.html">About</a>
-      <a href="pages/contact.html">Contact</a>
+      <a href="/pages/privacy-policy.html">Privacy Policy</a>
+      <a href="/pages/terms.html">Terms &amp; Conditions</a>
+      <a href="/pages/about.html">About</a>
+      <a href="/pages/contact.html">Contact</a>
     </div>
   </div>
 </footer>
 
 <!-- ─── COOKIE BANNER ─── -->
 <div class="cookie-banner" id="cookie-banner" style="display:none;" role="dialog" aria-label="Cookie consent">
-  <p>🍪 We use cookies to improve your experience and serve relevant ads. By continuing, you agree to our <a href="pages/privacy-policy.html">Privacy Policy</a>.</p>
+  <p>🍪 We use cookies to improve your experience and serve relevant ads. By continuing, you agree to our <a href="/pages/privacy-policy.html">Privacy Policy</a>.</p>
   <button class="cookie-accept" id="cookie-accept-btn">Accept</button>
 </div>
 

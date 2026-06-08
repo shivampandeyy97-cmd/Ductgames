@@ -14,7 +14,7 @@ const GAMES = [
     bg: 'linear-gradient(135deg, #6C3CE1, #22D1C8)',
     description: 'Classic 3×3 strategy game. Play against the computer!',
     tags: ['puzzle', 'strategy', 'classic'],
-    url: 'games/tictactoe/index.html',
+    url: '/games/tictactoe/',
     hot: true,
     free: true,
   },
@@ -26,7 +26,7 @@ const GAMES = [
     bg: 'linear-gradient(135deg, #22C55E, #065F46)',
     description: 'Eat, grow, and avoid hitting the walls!',
     tags: ['arcade', 'retro', 'casual'],
-    url: 'games/snake/index.html',
+    url: '/games/snake/',
     hot: true,
     free: true,
   },
@@ -38,7 +38,7 @@ const GAMES = [
     bg: 'linear-gradient(135deg, #8B5CF6, #EC4899)',
     description: 'Test your memory with card matching pairs.',
     tags: ['puzzle', 'memory', 'cards'],
-    url: 'games/memory/index.html',
+    url: '/games/memory/',
     free: true,
   },
   {
@@ -49,7 +49,7 @@ const GAMES = [
     bg: 'linear-gradient(135deg, #F59E0B, #EF4444)',
     description: 'Slide tiles and combine numbers to reach 2048!',
     tags: ['puzzle', 'numbers', 'casual'],
-    url: 'games/2048/index.html',
+    url: '/games/2048/',
     free: true,
   },
   {
@@ -782,7 +782,7 @@ function initSearch() {
     headerInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const q = headerInput.value.trim();
-        if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+        if (q) window.location.href = `/search.html?q=${encodeURIComponent(q)}`;
       }
     });
   }
@@ -793,7 +793,7 @@ function initSearch() {
       e.preventDefault();
       const input = document.getElementById('hero-search-input');
       const q = input?.value.trim();
-      if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+      if (q) window.location.href = `/search.html?q=${encodeURIComponent(q)}`;
     });
   }
 
