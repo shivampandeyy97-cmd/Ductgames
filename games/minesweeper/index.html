@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-adsense-account" content="ca-pub-1784776421772675">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1784776421772675"
+     crossorigin="anonymous"></script>
+
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minesweeper – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play Minesweeper free online at Ductgames. Classic 9x9 grid with 10 mines. Mobile-friendly controls with flag toggles, timers, and instant play — no download required." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/minesweeper/" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Minesweeper – Play Free Online | Ductgames" />
+  <meta property="og:description" content="Play Minesweeper free online at Ductgames. Classic 9x9 grid with 10 mines. Mobile-friendly controls with flag toggles, timers, and instant play — no download required." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/games/minesweeper/" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Minesweeper – Free HTML5 Game | Ductgames" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Minesweeper – Play Free Online | Ductgames" />
+  <meta name="twitter:description" content="Play Minesweeper free online at Ductgames. Classic 9x9 grid with 10 mines. Mobile-friendly controls with flag toggles, timers, and instant play — no download required." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
+  <style>
+    /* Minesweeper-specific styles */
+    .mines-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+    .score-cards {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .score-card {
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      min-width: 90px;
+      transition: var(--transition);
+    }
+    .score-card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .score-card .value { font-size: 1.7rem; font-weight: 900; line-height: 1.2; color: var(--primary); }
+    .score-card .value.red { color: #EF4444; }
+    .score-card .value.gold { color: #F59E0B; }
+
+    .mines-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      width: 100%;
+      max-width: 360px;
+      aspect-ratio: 1;
+      background: var(--border);
+      border: 3px solid var(--text-main);
+      border-radius: var(--radius-sm);
+      gap: 1px;
+      overflow: hidden;
+    }
+    .mines-cell {
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+      border: none;
+      outline: none;
+      aspect-ratio: 1;
+    }
+    .mines-cell.unrevealed {
+      background: var(--bg);
+      box-shadow: inset 1px 1px 0px rgba(255,255,255,0.1), inset -1px -1px 0px rgba(0,0,0,0.1);
+    }
+    .mines-cell.unrevealed:hover {
+      background: rgba(108,60,225,0.05);
+    }
+    .mines-cell.revealed {
+      background: var(--bg-card);
+      box-shadow: none;
+      cursor: default;
+    }
+    .mines-cell.mine {
+      background: #EF4444 !important;
+      color: #fff;
+    }
+    .mines-cell.flagged {
+      color: #EF4444;
+    }
+
+    /* Colors for adjacent counts */
+    .count-1 { color: #2563EB; }
+    .count-2 { color: #16A34A; }
+    .count-3 { color: #DC2626; }
+    .count-4 { color: #1E3A8A; }
+    .count-5 { color: #7C2D12; }
+    .count-6 { color: #0891B2; }
+    .count-7 { color: #000000; }
+    .count-8 { color: #78716C; }
+
+    .mines-controls {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      max-width: 360px;
+    }
+    .mines-btn {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+    .mines-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .mines-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="Back to Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="/" class="nav-link">All Games</a>
+      <a href="/?cat=puzzle" class="nav-link">Puzzle</a>
+      <a href="/?cat=arcade" class="nav-link active">Arcade</a>
+      <a href="/?cat=strategy" class="nav-link">Strategy</a>
+      <a href="/blog/" class="nav-link">Blog</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/?cat=arcade" itemprop="item" style="color:var(--primary);"><span itemprop="name">Arcade</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Minesweeper</span>
+          <meta itemprop="position" content="3" />
+        </li>
+      </ol>
+    </nav>
+
+    <div class="game-page-layout">
+
+      <!-- GAME MAIN -->
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">Minesweeper</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator" id="player-indicator">
+                <div class="player-dot" id="player-dot" style="background:#EF4444;"></div>
+                <span id="turn-label">Dodge the mines in the grid!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards">
+            <div class="score-card">
+              <div class="label">Difficulty</div>
+              <div class="value">9×9</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Mines Left</div>
+              <div class="value red" id="mines-left">10</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Time</div>
+              <div class="value gold" id="timer-display">0:00</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive" style="background:#EF4444;">
+            💣 Tap any square to begin your sweep!
+          </div>
+
+          <!-- Game Board -->
+          <div class="mines-wrapper">
+            <div class="mines-grid" id="mines-grid" role="grid" aria-label="Minesweeper grid">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Controls -->
+            <div class="mines-controls">
+              <button class="mines-btn active" id="mode-dig">⛏️ Dig Mode</button>
+              <button class="mines-btn" id="mode-flag">🚩 Flag Mode</button>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="New game">🔄 New Game</button>
+          </div>
+
+          <!-- Ad -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <span>Advertisement</span>
+          </div>
+
+          <!-- SEO DESCRIPTION -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:0; margin-bottom:10px; color:var(--text-main);">The Logic and History of Minesweeper</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">Minesweeper is one of the most iconic single-player logic puzzles in computer history. While it gained global fame as a bundled game in Microsoft Windows, its origins trace back to early mainframe computer systems of the 1960s and 1970s. Earlier titles like Jerimac Ratliff's <i>Cube</i> and the classic mainframe game <i>Mined fields</i> paved the way for modern grid-clearing logic. In 1989, developers Robert Donner and Curt Johnson created the modern version of Minesweeper, which was subsequently packaged into the Microsoft Entertainment Pack for Windows 3.0 in 1990. The developers designed the game to help computer users adapt to the newly popularized graphical user interface (GUI) and, specifically, to train muscle memory for the left-click (reveal) and right-click (flag) mechanics of the computer mouse. Today, Minesweeper is recognized not just as a casual time-killer, but as a deep mathematical puzzle that exercises spatial deduction and pattern recognition.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Strategic Patterns: How to Beat Minesweeper</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">To clear a Minesweeper board without triggering an explosion, you must master the numerical patterns displayed on the board. Each revealed number represents the exact count of mines occupying the eight adjacent squares. The most fundamental pattern is the <strong>1-1 pattern</strong>. If you have two adjacent '1' tiles facing a flat edge, the squares beyond them can often be deduced. A more advanced strategy is the <strong>1-2-1 pattern</strong> along a straight wall. When you encounter a 1, a 2, and a 1 in sequence, the logic dictates that the mines must lie directly adjacent to the '1' cells on the outer edges, while the square next to the middle '2' is completely safe. Applying these logical steps allows players to clear large portions of the board without guessing. However, in advanced layouts, you may occasionally face "50/50" scenarios where two cells are equally likely to contain a mine. In these situations, it is best to calculate the global mine count shown by your mine counter to determine the statistically safest path forward.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Step-by-Step Instructions: How to Play</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Follow these five simple steps to play a game of Minesweeper on Ductgames:</p>
+            <ol style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px; padding-left:20px;">
+              <li style="margin-bottom:8px;"><strong>Begin Safely</strong>: Your very first click on the 9x9 grid is guaranteed to be safe and will never trigger a mine. It will open up a starting space and reveal adjacent numbers.</li>
+              <li style="margin-bottom:8px;"><strong>Read the Grid Numbers</strong>: Look at the numbers revealed on the grid. A '1' means there is exactly one mine adjacent to that square; a '2' means there are two mines, and so on.</li>
+              <li style="margin-bottom:8px;"><strong>Toggle Between Dig and Flag</strong>: Use the controls below the board to switch modes. Dig Mode reveals cells, while Flag Mode places a red flag (🚩) on suspected mines. Desktop users can also right-click to place flags instantly.</li>
+              <li style="margin-bottom:8px;"><strong>Clear the Safe Areas</strong>: Carefully click on cells that you have mathematically determined to be safe. If a cell has zero adjacent mines, the game will automatically clear a wider area for you.</li>
+              <li style="margin-bottom:8px;"><strong>Claim Victory</strong>: You win the game by successfully revealing all 71 safe squares on the board. The game ends immediately in defeat if you click on a hidden mine.</li>
+            </ol>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Frequently Asked Questions</h2>
+            
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Is the first click in Minesweeper always safe?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Yes. Our implementation uses dynamic board generation. When you click the first square, the game automatically places the 10 mines around that starting cell, ensuring you never hit a mine on your opening move.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Can Minesweeper puzzles always be solved using pure logic?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Most games can be solved using pure logic, especially on a standard 9x9 beginner grid. However, on larger or custom grids, you may occasionally run into a 50/50 layout where the placement of the remaining mine cannot be logically deduced, requiring a calculated guess.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What do the numbers on the grid mean?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Each number represents the total number of mines in the surrounding eight cells (horizontal, vertical, and diagonal). If a cell shows a '3', it means exactly three of the eight adjacent squares contain a mine.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">How do I win Minesweeper?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">To win, you must reveal all the squares on the board that do not contain mines. You do not need to place flags on all mines to win; the victory triggers automatically once all safe tiles are revealed.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Can I play Minesweeper on a mobile device?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:0;">Yes. Our HTML5 version features an integrated touch toggle bar ("Dig Mode" vs "Flag Mode"), making it extremely easy to flag tiles and clear paths on any touchscreen smartphone or tablet without right-clicking.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info">
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Click any cell. The first click is <strong>always safe</strong>.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Numbers reveal how many <strong>adjacent mines</strong> are present.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">Place flags (🚩) on suspected mines to keep track of them.</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">Reveal all <strong>non-mine cells</strong> to win the game!</div></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎮 Play Other Games</h3>
+          <a href="/games/sudoku/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#0EA5E9,#6C3CE1)">🔣</div>
+            <div class="related-info"><div class="title">Sudoku</div><div class="cat">Puzzle</div></div>
+          </a>
+          <a href="/games/tictactoe/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
+            <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
+          </a>
+          <a href="/games/snake/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
+            <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
+          </a>
+          <a href="/games/memory/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
+            <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
+          </a>
+          <a href="/games/2048/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
+            <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
+          </a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="/assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="/">All Games</a></li><li><a href="/games/tictactoe/">Tic Tac Toe</a></li><li><a href="/games/snake/">Snake</a></li><li><a href="/games/2048/">2048</a></li><li><a href="/games/memory/">Memory Match</a></li><li><a href="/games/sudoku/">Sudoku</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="/blog/">Blog</a></li><li><a href="/pages/about.html">About Us</a></li><li><a href="/pages/contact.html">Contact</a></li><li><a href="/pages/privacy-policy.html">Privacy Policy</a></li><li><a href="/pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="/pages/privacy-policy.html">Privacy Policy</a><a href="/pages/terms.html">Terms</a><a href="/pages/about.html">About</a><a href="/pages/contact.html">Contact</a></div></div>
+</footer>
+
+<script>
+/* ==============================================
+   MINESWEEPER — GAME ENGINE
+   ============================================= */
+
+const ROWS = 9;
+const COLS = 9;
+const MINE_COUNT = 10;
+
+let grid = [];
+let minesPlaced = false;
+let gameOver = false;
+let currentMode = 'dig'; // 'dig' | 'flag'
+let timer = null;
+let seconds = 0;
+let revealedCount = 0;
+let flaggedMines = 0;
+
+// Initialize layout
+function initGame() {
+  clearInterval(timer);
+  seconds = 0;
+  revealedCount = 0;
+  flaggedMines = 0;
+  minesPlaced = false;
+  gameOver = false;
+  document.getElementById('timer-display').textContent = '0:00';
+  document.getElementById('mines-left').textContent = MINE_COUNT;
+  
+  // Set default mode
+  setMode('dig');
+
+  const boardEl = document.getElementById('mines-grid');
+  boardEl.innerHTML = '';
+
+  grid = [];
+  for (let r = 0; r < ROWS; r++) {
+    const row = [];
+    for (let c = 0; c < COLS; c++) {
+      const cell = document.createElement('button');
+      cell.className = 'mines-cell unrevealed';
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.setAttribute('role', 'gridcell');
+      
+      // Events
+      cell.addEventListener('click', () => handleCellClick(r, c));
+      cell.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        toggleFlag(r, c);
+      });
+
+      boardEl.appendChild(cell);
+
+      row.push({
+        el: cell,
+        row: r,
+        col: c,
+        isMine: false,
+        isRevealed: false,
+        isFlagged: false,
+        neighborMines: 0
+      });
+    }
+    grid.push(row);
+  }
+  
+  setMessage('💣 Tap any square to begin your sweep!', '#EF4444');
+}
+
+// Set mode dig vs flag
+function setMode(mode) {
+  currentMode = mode;
+  if (mode === 'dig') {
+    document.getElementById('mode-dig').classList.add('active');
+    document.getElementById('mode-flag').classList.remove('active');
+  } else {
+    document.getElementById('mode-dig').classList.remove('active');
+    document.getElementById('mode-flag').classList.add('active');
+  }
+}
+
+document.getElementById('mode-dig').addEventListener('click', () => setMode('dig'));
+document.getElementById('mode-flag').addEventListener('click', () => setMode('flag'));
+
+// Handle clicking a cell
+function handleCellClick(r, c) {
+  if (gameOver) return;
+
+  const cell = grid[r][c];
+  if (cell.isRevealed) return;
+
+  if (currentMode === 'flag') {
+    toggleFlag(r, c);
+    return;
+  }
+
+  if (cell.isFlagged) return;
+
+  // First click is always safe
+  if (!minesPlaced) {
+    placeMines(r, c);
+    calculateNeighbors();
+    minesPlaced = true;
+    startTimer();
+  }
+
+  if (cell.isMine) {
+    explode(r, c);
+    return;
+  }
+
+  revealCell(r, c);
+  checkWin();
+}
+
+// Place mines (avoiding the first clicked cell)
+function placeMines(startR, startC) {
+  let placed = 0;
+  while (placed < MINE_COUNT) {
+    const r = Math.floor(Math.random() * ROWS);
+    const c = Math.floor(Math.random() * COLS);
+
+    // Make sure it's not the start cell and doesn't already have a mine
+    if ((r !== startR || c !== startC) && !grid[r][c].isMine) {
+      grid[r][c].isMine = true;
+      placed++;
+    }
+  }
+}
+
+// Calculate neighbor mines count for each cell
+function calculateNeighbors() {
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c].isMine) continue;
+
+      let count = 0;
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+            if (grid[nr][nc].isMine) count++;
+          }
+        }
+      }
+      grid[r][c].neighborMines = count;
+    }
+  }
+}
+
+// Reveal cell logic
+function revealCell(r, c) {
+  const cell = grid[r][c];
+  if (cell.isRevealed || cell.isFlagged) return;
+
+  cell.isRevealed = true;
+  cell.el.classList.remove('unrevealed');
+  cell.el.classList.add('revealed');
+  revealedCount++;
+
+  if (cell.neighborMines > 0) {
+    cell.el.textContent = cell.neighborMines;
+    cell.el.classList.add('count-' + cell.neighborMines);
+  } else {
+    // If 0, reveal all adjacent
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        const nr = r + dr;
+        const nc = c + dc;
+        if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+          revealCell(nr, nc);
+        }
+      }
+    }
+  }
+}
+
+// Toggle flag
+function toggleFlag(r, c) {
+  if (gameOver) return;
+  const cell = grid[r][c];
+  if (cell.isRevealed) return;
+
+  cell.isFlagged = !cell.isFlagged;
+  if (cell.isFlagged) {
+    cell.el.classList.add('flagged');
+    cell.el.textContent = '🚩';
+    flaggedMines++;
+  } else {
+    cell.el.classList.remove('flagged');
+    cell.el.textContent = '';
+    flaggedMines--;
+  }
+
+  document.getElementById('mines-left').textContent = Math.max(0, MINE_COUNT - flaggedMines);
+}
+
+// Explode mine
+function explode(hitR, hitC) {
+  gameOver = true;
+  clearInterval(timer);
+
+  // Reveal all mines
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const cell = grid[r][c];
+      if (cell.isMine) {
+        cell.el.classList.remove('unrevealed');
+        cell.el.classList.add('revealed', 'mine');
+        cell.el.textContent = '💣';
+      }
+    }
+  }
+
+  grid[hitR][hitC].el.style.background = '#EF4444';
+  setMessage('💥 BOOM! You triggered a mine. Game Over.', '#EF4444');
+}
+
+// Check win condition
+function checkWin() {
+  const safeCellsCount = (ROWS * COLS) - MINE_COUNT;
+  if (revealedCount === safeCellsCount) {
+    gameOver = true;
+    clearInterval(timer);
+
+    // Flag remaining mines
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const cell = grid[r][c];
+        if (cell.isMine && !cell.isFlagged) {
+          cell.isFlagged = true;
+          cell.el.classList.add('flagged');
+          cell.el.textContent = '🚩';
+        }
+      }
+    }
+
+    document.getElementById('mines-left').textContent = 0;
+    setMessage('🎉 Congratulations! You successfully swept the grid!', '#22C55E');
+  }
+}
+
+// Helper to set message
+function setMessage(text, color) {
+  const el = document.getElementById('game-message');
+  el.textContent = text;
+  el.style.background = color;
+}
+
+// Timer logic
+function startTimer() {
+  timer = setInterval(() => {
+    seconds++;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById('timer-display').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+// Reset button
+document.getElementById('reset-btn').addEventListener('click', initGame);
+
+// Run init
+initGame();
+</script>
+</body>
+</html>

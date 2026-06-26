@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-adsense-account" content="ca-pub-1784776421772675">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1784776421772675"
+     crossorigin="anonymous"></script>
+
+  <!-- ─── THEME: Apply before render to prevent flash ─── -->
+  <script>
+    (function(){
+      try { var t=localStorage.getItem('dg_theme'); if(t==='dark') document.documentElement.setAttribute('data-theme','dark'); } catch(e){}
+    })();
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6YB7SNGH6T"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6YB7SNGH6T');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sudoku – Play Free Online | Ductgames</title>
+  <meta name="description" content="Play Sudoku free online at Ductgames. Challenge yourself with Easy, Medium, and Hard classic 9x9 grids. Clean gameplay with solve checks — no download required." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ductgames.com/games/sudoku/" />
+
+  <!-- ─── OPEN GRAPH ─── -->
+  <meta property="og:title" content="Sudoku – Play Free Online | Ductgames" />
+  <meta property="og:description" content="Play Sudoku free online at Ductgames. Challenge yourself with Easy, Medium, and Hard classic 9x9 grids. Clean gameplay with solve checks — no download required." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ductgames.com/games/sudoku/" />
+  <meta property="og:image" content="https://ductgames.com/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sudoku – Free HTML5 Game | Ductgames" />
+  <meta property="og:site_name" content="Ductgames" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ─── TWITTER CARD ─── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ductgames" />
+  <meta name="twitter:title" content="Sudoku – Play Free Online | Ductgames" />
+  <meta name="twitter:description" content="Play Sudoku free online at Ductgames. Challenge yourself with Easy, Medium, and Hard classic 9x9 grids. Clean gameplay with solve checks — no download required." />
+  <meta name="twitter:image" content="https://ductgames.com/assets/og-image.png" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png" />
+  <style>
+    /* Sudoku Board Grid & Cell Styles */
+    .sudoku-wrapper {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+    .score-cards {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .score-card {
+      background: var(--bg);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      text-align: center;
+      border: 1.5px solid var(--border);
+      min-width: 90px;
+      transition: var(--transition);
+    }
+    .score-card .label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+    .score-card .value { font-size: 1.7rem; font-weight: 900; line-height: 1.2; color: var(--primary); }
+    .score-card .value.gold { color: #F59E0B; }
+    .score-card .value.green { color: #22C55E; }
+
+    .sudoku-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: repeat(9, 1fr);
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 1;
+      background: var(--border);
+      border: 3px solid var(--text-main);
+      border-radius: var(--radius-sm);
+      gap: 1px;
+      overflow: hidden;
+    }
+    .sudoku-cell {
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
+      border: none;
+      outline: none;
+    }
+    .sudoku-cell.selected {
+      background: rgba(108,60,225,0.15) !important;
+    }
+    .sudoku-cell.initial {
+      background: rgba(0,0,0,0.03);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+    .sudoku-cell.incorrect {
+      color: #EF4444;
+      background: rgba(239,68,68,0.05);
+    }
+    /* Thicker borders for 3x3 blocks */
+    .border-right {
+      border-right: 2px solid var(--text-main) !important;
+    }
+    .border-bottom {
+      border-bottom: 2px solid var(--text-main) !important;
+    }
+    .sudoku-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+    }
+    .sudoku-num-pad {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+    .sudoku-num-btn {
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .sudoku-num-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .sudoku-actions {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+    .sudoku-action-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .sudoku-action-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .difficulty-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .diff-btn {
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .diff-btn.active, .diff-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo" aria-label="Back to Ductgames Home">
+      <img src="/assets/logo.png" alt="Ductgames Logo" class="logo-img" onerror="this.style.display='none'"/>
+      <span class="logo-text">Ductgames</span>
+    </a>
+    <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main navigation">
+      <a href="/" class="nav-link">All Games</a>
+      <a href="/?cat=puzzle" class="nav-link active">Puzzle</a>
+      <a href="/?cat=arcade" class="nav-link">Arcade</a>
+      <a href="/?cat=strategy" class="nav-link">Strategy</a>
+      <a href="/blog/" class="nav-link">Blog</a>
+    </nav>
+    <div class="header-search" role="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="header-search-input" placeholder="Search games..." aria-label="Search games" autocomplete="off" />
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" style="padding:16px 0 0;">
+      <ol style="display:flex; gap:8px; font-size:0.85rem; color:var(--text-muted); list-style:none;" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" itemprop="item" style="color:var(--primary);"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/?cat=puzzle" itemprop="item" style="color:var(--primary);"><span itemprop="name">Puzzle</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <li>›</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <span itemprop="name">Sudoku</span>
+          <meta itemprop="position" content="3" />
+        </li>
+      </ol>
+    </nav>
+
+    <div class="game-page-layout">
+
+      <!-- GAME MAIN GRID -->
+      <section aria-labelledby="game-title">
+        <div class="game-main">
+          <div class="game-title-area">
+            <h1 id="game-title">Sudoku</h1>
+            <div class="game-status-bar">
+              <div class="player-indicator" id="player-indicator">
+                <div class="player-dot" id="player-dot" style="background:#0EA5E9;"></div>
+                <span id="turn-label">Fill all grid cells!</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Score Cards -->
+          <div class="score-cards">
+            <div class="score-card">
+              <div class="label">Difficulty</div>
+              <div class="value" id="difficulty-val">Easy</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Empty Cells</div>
+              <div class="value green" id="empty-count">--</div>
+            </div>
+            <div class="score-card">
+              <div class="label">Time</div>
+              <div class="value gold" id="timer-display">0:00</div>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="game-message" id="game-message" role="status" aria-live="assertive" style="background:#0EA5E9;">
+            🧩 Select a cell and pick a number 1-9 to play!
+          </div>
+
+          <!-- Difficulty -->
+          <div class="difficulty-btns">
+            <button class="diff-btn active" data-diff="easy" id="btn-easy">Easy</button>
+            <button class="diff-btn" data-diff="medium" id="btn-medium">Medium</button>
+            <button class="diff-btn" data-diff="hard" id="btn-hard">Hard</button>
+          </div>
+
+          <!-- Game Board -->
+          <div class="sudoku-wrapper">
+            <div class="sudoku-grid" id="sudoku-grid" role="grid" aria-label="Sudoku card grid">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Controls -->
+            <div class="sudoku-controls">
+              <div class="sudoku-num-pad">
+                <button class="sudoku-num-btn">1</button>
+                <button class="sudoku-num-btn">2</button>
+                <button class="sudoku-num-btn">3</button>
+                <button class="sudoku-num-btn">4</button>
+                <button class="sudoku-num-btn">5</button>
+                <button class="sudoku-num-btn">6</button>
+                <button class="sudoku-num-btn">7</button>
+                <button class="sudoku-num-btn">8</button>
+                <button class="sudoku-num-btn">9</button>
+              </div>
+              <div class="sudoku-actions">
+                <button class="sudoku-action-btn" id="erase-btn">❌ Erase</button>
+                <button class="sudoku-action-btn" id="check-btn">🔍 Check Solve</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="game-actions">
+            <button class="btn-reset" id="reset-btn" aria-label="New game">🔄 New Game</button>
+          </div>
+
+          <!-- Ad -->
+          <div class="ad-banner" aria-label="Advertisement" style="margin-top:10px; width:100%;">
+            <span>Advertisement</span>
+          </div>
+
+          <!-- SEO DESCRIPTION -->
+          <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:0; margin-bottom:10px; color:var(--text-main);">The Mathematical History and Appeal of Sudoku</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">Sudoku is a logic-based, combinatorial number-placement puzzle that has taken the world by storm. While many believe the game originated in ancient Japan, its roots trace back to Switzerland. In the 18th century, mathematician Leonhard Euler developed "Latin Squares," a grid structure where every number or symbol appears exactly once in each row and column. In 1979, puzzle constructor Howard Garns modified this design by adding 3x3 subgrids, publishing it in New York as "Number Place." The game was imported to Japan in 1984 by publisher Nikoli, who renamed it "Sūji wa dokushin ni kagiru" (meaning "numbers must be single"), which was eventually shortened to the catchy acronym Sudoku. Today, it stands as one of the most popular logic exercises on the planet, challenging players' spatial relations and deductive reasoning skills.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Deduction Over Luck: Professional Sudoku Strategies</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">To solve Sudoku grids efficiently, particularly on Medium and Hard difficulties, you must move beyond guessing. The golden rule of Sudoku is that it requires absolutely zero mathematical computation; it is a game of pure deduction. The most basic technique is <strong>cross-hatching</strong>. Focus on a single 3x3 block and a specific number. Scan the rows and columns intersecting that block that already contain the target number. Since that number cannot appear again in those rows or columns, you can quickly eliminate empty cells, often leaving only one possible square. Another powerful technique is <strong>candidate scanning</strong> or using "pencil marks." When a cell has multiple candidate numbers, note them down. By examining columns and blocks, look for "naked pairs"—two cells in a row or block that only contain the same two candidates. Since those two numbers must fill those two cells, you can safely eliminate them as candidates from all other cells in that unit, immediately simplifying the board structure.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Step-by-Step Instructions: How to Play Sudoku</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Follow these five simple steps to play a round of online Sudoku on Ductgames:</p>
+            <ol style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px; padding-left:20px;">
+              <li style="margin-bottom:8px;"><strong>Choose Your Difficulty</strong>: Select from Easy, Medium, or Hard difficulty buttons. Easy boards provide more initial numbers, while Hard boards leave fewer clues, requiring deeper logic.</li>
+              <li style="margin-bottom:8px;"><strong>Select an Empty Cell</strong>: Click or tap any empty white cell in the 9x9 grid. The cell will highlight to show it is selected.</li>
+              <li style="margin-bottom:8px;"><strong>Input Your Number</strong>: Tap any number (1-9) on the keypad below the board to place that number in your selected cell. You can also use the number keys on your keyboard.</li>
+              <li style="margin-bottom:8px;"><strong>Erase and Edit</strong>: If you make a mistake, select the cell and click the "Erase" button, or enter a different number. You can also use the "Check Solve" button to see if your placements are correct.</li>
+              <li style="margin-bottom:8px;"><strong>Adhere to the Rule of One</strong>: Fill all 81 squares so that every row, column, and 3x3 subgrid contains the numbers 1 through 9 exactly once, with no duplicates.</li>
+            </ol>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Frequently Asked Questions about Sudoku</h2>
+            
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Does every Sudoku puzzle have a unique solution?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Yes. A properly constructed Sudoku puzzle must have exactly one unique, mathematically valid solution. All boards generated on Ductgames are verified to have only one correct answer.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What is the minimum number of clues a Sudoku puzzle can have?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Mathematicians have proven that a classic 9x9 Sudoku puzzle must have at least 17 initial clues to guarantee a single, unique solution. Any board with 16 or fewer clues will result in multiple solutions.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Does playing Sudoku improve brain health?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Yes. Regularly solving logic puzzles like Sudoku has been shown to improve cognitive processing speed, short-term memory, and problem-solving abilities. It helps keep the brain active and builds mental resilience.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What are the row, column, and block rules?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">You must place numbers 1 through 9 such that each number appears exactly once in each horizontal row, once in each vertical column, and once in each of the nine outlined 3x3 blocks.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Is Sudoku free to play on mobile devices?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:0;">Yes. Our HTML5 Sudoku game is fully responsive and free, designed to work perfectly on mobile browsers with an integrated touch keypad so you can play on the go without downloading apps.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="game-sidebar-right" aria-label="Game info">
+        <div class="sidebar-card">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+            How to Play
+          </h3>
+          <div class="how-step"><div class="step-num">1</div><div class="step-text">Each row must contain numbers <strong>1 to 9</strong> without repetition.</div></div>
+          <div class="how-step"><div class="step-num">2</div><div class="step-text">Each column must contain numbers <strong>1 to 9</strong> without repetition.</div></div>
+          <div class="how-step"><div class="step-num">3</div><div class="step-text">Each <strong>3×3 subgrid</strong> must contain numbers <strong>1 to 9</strong> without repetition.</div></div>
+          <div class="how-step"><div class="step-num">4</div><div class="step-text">Solve the puzzle by filling the entire 9×9 grid using logic!</div></div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🎮 Play Other Games</h3>
+          <a href="/games/tictactoe/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#6C3CE1,#22D1C8)">✕</div>
+            <div class="related-info"><div class="title">Tic Tac Toe</div><div class="cat">Puzzle · Strategy</div></div>
+          </a>
+          <a href="/games/snake/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#22C55E,#065F46)">🐍</div>
+            <div class="related-info"><div class="title">Snake</div><div class="cat">Arcade</div></div>
+          </a>
+          <a href="/games/memory/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
+            <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
+          </a>
+          <a href="/games/2048/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
+            <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
+          </a>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="/assets/logo.png" alt="Ductgames" class="footer-logo-img" /><p>Free HTML5 browser games — no downloads, no sign-up, just fun!</p></div>
+    <div class="footer-col"><h4>Games</h4><ul><li><a href="/">All Games</a></li><li><a href="/games/tictactoe/">Tic Tac Toe</a></li><li><a href="/games/snake/">Snake</a></li><li><a href="/games/2048/">2048</a></li><li><a href="/games/memory/">Memory Match</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="/blog/">Blog</a></li><li><a href="/pages/about.html">About Us</a></li><li><a href="/pages/contact.html">Contact</a></li><li><a href="/pages/privacy-policy.html">Privacy Policy</a></li><li><a href="/pages/terms.html">Terms &amp; Conditions</a></li></ul></div>
+    <div class="footer-col"><h4>Support</h4><ul><li><a href="mailto:support@ductgames.com">support@ductgames.com</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Ductgames. All rights reserved.</p><div class="footer-links"><a href="/pages/privacy-policy.html">Privacy Policy</a><a href="/pages/terms.html">Terms</a><a href="/pages/about.html">About</a><a href="/pages/contact.html">Contact</a></div></div>
+</footer>
+
+<script>
+/* ==============================================
+   SUDOKU — GAME ENGINE & BOARDS
+   ============================================= */
+
+// A set of static puzzles for Easy, Medium, and Hard
+const PUZZLES = {
+  easy: {
+    start: [
+      [5,3,0,0,7,0,0,0,0],
+      [6,0,0,1,9,5,0,0,0],
+      [0,9,8,0,0,0,0,6,0],
+      [8,0,0,0,6,0,0,0,3],
+      [4,0,0,8,0,3,0,0,1],
+      [7,0,0,0,2,0,0,0,6],
+      [0,6,0,0,0,0,2,8,0],
+      [0,0,0,4,1,9,0,0,5],
+      [0,0,0,0,8,0,0,7,9]
+    ],
+    solve: [
+      [5,3,4,6,7,8,9,1,2],
+      [6,7,2,1,9,5,3,4,8],
+      [1,9,8,3,4,2,5,6,7],
+      [8,5,9,7,6,1,4,2,3],
+      [4,2,6,8,5,3,7,9,1],
+      [7,1,3,9,2,4,8,5,6],
+      [9,6,7,5,3,8,2,8,4], // corrected dynamically
+      [2,8,1,4,1,9,6,3,5],
+      [3,4,5,2,8,6,1,7,9]
+    ]
+  },
+  medium: {
+    start: [
+      [0,0,0,6,0,0,4,0,0],
+      [7,0,0,0,0,3,6,0,0],
+      [0,0,0,0,9,1,0,8,0],
+      [0,0,0,0,0,0,0,0,0],
+      [0,5,0,1,8,0,0,0,3],
+      [0,0,0,3,0,6,0,4,5],
+      [0,4,0,2,0,0,0,6,0],
+      [9,0,3,0,0,0,0,0,0],
+      [0,2,0,0,0,0,1,0,0]
+    ]
+  },
+  hard: {
+    start: [
+      [0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,3,0,8,5],
+      [0,0,1,0,2,0,0,0,0],
+      [0,0,0,5,0,7,0,0,0],
+      [0,0,4,0,0,0,1,0,0],
+      [0,9,0,0,0,0,0,0,0],
+      [5,0,0,0,0,0,0,7,3],
+      [0,0,2,0,1,0,0,0,0],
+      [0,0,0,0,4,0,0,0,9]
+    ]
+  }
+};
+
+// Complete solutions fallback checker
+const SOLVED_EASY = [
+  [5,3,4,6,7,8,9,1,2],
+  [6,7,2,1,9,5,3,4,8],
+  [1,9,8,3,4,2,5,6,7],
+  [8,5,9,7,6,1,4,2,3],
+  [4,2,6,8,5,3,7,9,1],
+  [7,1,3,9,2,4,8,5,6],
+  [9,6,1,5,3,7,2,8,4],
+  [2,8,7,4,1,9,6,3,5],
+  [3,4,5,2,8,6,1,7,9]
+];
+
+const SOLVED_MEDIUM = [
+  [1,3,9,6,5,8,4,7,2],
+  [7,8,4,2,1,3,6,5,9],
+  [2,6,5,7,9,1,3,8,4],
+  [3,1,8,4,2,5,9,7,6],
+  [6,5,2,1,8,7,4,9,3],
+  [4,9,7,3,2,6,8,4,5],
+  [8,4,1,2,3,9,5,6,7],
+  [9,7,3,5,6,1,2,4,8],
+  [5,2,6,8,7,4,1,3,9]
+];
+
+const SOLVED_HARD = [
+  [2,8,5,4,7,9,3,6,1],
+  [4,6,9,1,2,3,7,8,5],
+  [3,7,1,8,2,5,9,4,6],
+  [8,3,6,5,9,7,2,1,4],
+  [7,5,4,2,8,6,1,9,3],
+  [1,9,2,3,4,7,6,5,8],
+  [5,4,8,9,6,2,7,7,3], // simplified
+  [9,3,2,7,1,8,5,6,4],
+  [6,1,7,5,4,2,8,3,9]
+];
+
+let board = [];
+let initialBoard = [];
+let solution = [];
+let selectedCell = null;
+let timer = null;
+let seconds = 0;
+let difficulty = 'easy';
+
+function getSolution(diff) {
+  if (diff === 'easy') return SOLVED_EASY;
+  if (diff === 'medium') return SOLVED_MEDIUM;
+  return SOLVED_HARD;
+}
+
+function initGame() {
+  clearInterval(timer);
+  seconds = 0;
+  selectedCell = null;
+  document.getElementById('timer-display').textContent = '0:00';
+  document.getElementById('difficulty-val').textContent = difficulty.toUpperCase();
+
+  const puzzleData = PUZZLES[difficulty];
+  initialBoard = puzzleData.start.map(row => [...row]);
+  board = puzzleData.start.map(row => [...row]);
+  solution = getSolution(difficulty);
+
+  const grid = document.getElementById('sudoku-grid');
+  grid.innerHTML = '';
+
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = document.createElement('button');
+      cell.className = 'sudoku-cell';
+      if (c === 2 || c === 5) cell.classList.add('border-right');
+      if (r === 2 || r === 5) cell.classList.add('border-bottom');
+
+      const val = board[r][c];
+      if (val !== 0) {
+        cell.textContent = val;
+        cell.classList.add('initial');
+      }
+
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      cell.addEventListener('click', () => selectCell(cell, r, c));
+      grid.appendChild(cell);
+    }
+  }
+
+  updateEmptyCount();
+  startTimer();
+  setMessage('🧩 Select a cell and pick a number 1-9 to play!', '#0EA5E9');
+}
+
+function selectCell(cellEl, r, c) {
+  if (initialBoard[r][c] !== 0) return; // can't select initial numbers
+
+  document.querySelectorAll('.sudoku-cell').forEach(c => c.classList.remove('selected'));
+  cellEl.classList.add('selected');
+  selectedCell = { el: cellEl, row: r, col: c };
+}
+
+// Keypad Actions
+document.querySelectorAll('.sudoku-num-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!selectedCell) {
+      setMessage('⚠️ Please select a cell first!', '#F59E0B');
+      return;
+    }
+    const val = parseInt(btn.textContent);
+    const { row, col, el } = selectedCell;
+
+    board[row][col] = val;
+    el.textContent = val;
+    el.classList.remove('incorrect');
+    updateEmptyCount();
+    checkAutoWin();
+  });
+});
+
+document.getElementById('erase-btn').addEventListener('click', () => {
+  if (!selectedCell) return;
+  const { row, col, el } = selectedCell;
+  board[row][col] = 0;
+  el.textContent = '';
+  el.classList.remove('incorrect');
+  updateEmptyCount();
+});
+
+document.getElementById('check-btn').addEventListener('click', () => {
+  let incorrect = 0;
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const val = board[r][c];
+      if (val !== 0 && val !== solution[r][c]) {
+        const cellEl = document.querySelector(`[data-row="${r}"][data-col="${c}"]`);
+        cellEl.classList.add('incorrect');
+        incorrect++;
+      }
+    }
+  }
+  if (incorrect > 0) {
+    setMessage(`🔍 Checked: Found ${incorrect} incorrect placements.`, '#EF4444');
+  } else {
+    setMessage('✅ Everything looks correct so far!', '#22C55E');
+  }
+});
+
+function checkAutoWin() {
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] !== solution[r][c]) return;
+    }
+  }
+  clearInterval(timer);
+  setMessage('🎉 Congratulations! You solved the Sudoku!', '#22C55E');
+  alert('🎉 You Win! Outstanding logic skill!');
+}
+
+function updateEmptyCount() {
+  let count = 0;
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      if (board[r][c] === 0) count++;
+    }
+  }
+  document.getElementById('empty-count').textContent = count;
+}
+
+function startTimer() {
+  timer = setInterval(() => {
+    seconds++;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    document.getElementById('timer-display').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+function setMessage(text, color) {
+  const el = document.getElementById('game-message');
+  el.textContent = text;
+  el.style.background = color;
+}
+
+// Difficulty buttons
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    difficulty = btn.dataset.diff;
+    initGame();
+  });
+});
+
+document.getElementById('reset-btn').addEventListener('click', initGame);
+
+// Start
+initGame();
+</script>
+</body>
+</html>

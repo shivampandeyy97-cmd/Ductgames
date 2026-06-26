@@ -203,8 +203,38 @@
 
           <!-- Game Description for SEO -->
           <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
-            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About Tic Tac Toe</h2>
-            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">Tic Tac Toe (also known as Noughts and Crosses) is one of the world's most beloved classic strategy games. Play as <strong>X</strong> against our <strong>AI computer opponent</strong> that uses a minimax algorithm to challenge you on both Easy and Hard difficulty settings. Get three of your marks in a row — horizontally, vertically, or diagonally — to win. All you need is your browser, no download or registration required!</p>
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:0; margin-bottom:10px; color:var(--text-main);">The Rich History and Enduring Appeal of Tic Tac Toe</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">Tic Tac Toe, also known as Noughts and Crosses, is one of the oldest and most universally recognized games in human history. The game's origins trace back thousands of years to ancient Egypt, where researchers discovered similar three-in-a-row grids carved into temple roof tiles dating back to around 1300 BCE. The Roman Empire played a variation called Terni Lapilli, which translates to "three pebbles at a time." In 1952, Tic Tac Toe made technological history by becoming one of the first-ever computer games, OXO, developed for the EDSAC computer. What explains the game's enduring appeal over three millennia? It lies in its simplicity, elegant design, and accessibility. It requires no language skills, expensive equipment, or extensive setup. It serves as a fundamental learning tool for children, introducing concepts of spatial reasoning, turn-taking, and basic logic. Yet, for players of all ages, it remains a quick, satisfying mental challenge that exercises the brain's pattern recognition abilities.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Mastering the Board: How to Win at Tic Tac Toe</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">While Tic Tac Toe seems simple, mastering it requires strategic foresight. If both players play perfectly, the game always ends in a draw. However, understanding mathematical strategies can help you seize victory when opponents make mistakes. First, prioritize <strong>centre control</strong>. Placing your mark in the middle square is statistically the strongest opening move, as it gives you the maximum possible ways to win—four different lines (horizontal, vertical, and two diagonals). If the center is taken, employ the <strong>corner strategy</strong>. Occupying the corners allows you to set traps. For example, if you place your first mark in a corner and your opponent does not occupy the center, you can secure the center next, setting up a "double attack" or "fork" that guarantees a win. For our digital version, the computer uses the <strong>minimax algorithm</strong>. Minimax is a decision-rule algorithm used in artificial intelligence and game theory. It works by recursively calculating all possible future moves on the board, assigning scores to potential outcomes, and selecting the path that maximizes the AI's chance of winning while minimizing yours. To beat this computational opponent, you must plan several steps ahead, block their potential forks, and force them into defensive play.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Step-by-Step Instructions: How to Play</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Follow these five simple steps to enjoy a match against our digital opponent:</p>
+            <ol style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px; padding-left:20px;">
+              <li style="margin-bottom:8px;"><strong>Choose Your Challenge Level</strong>: Before making your move, select your opponent's difficulty by toggling the AI button. Choose "Easy" for casual play or "Hard" to test your skills against the minimax algorithm.</li>
+              <li style="margin-bottom:8px;"><strong>Claim Your First Square</strong>: As the player, you always play as 'X' and go first. Click on any of the empty squares on the grid to place your mark.</li>
+              <li style="margin-bottom:8px;"><strong>Analyze the Computer's Response</strong>: Once you place your mark, the computer will automatically play as 'O'. Watch where it places its piece and assess its defensive or offensive layout.</li>
+              <li style="margin-bottom:8px;"><strong>Block and Build</strong>: Take turns placing marks. Your goal is to form a line of three 'X' marks while simultaneously blocking the computer from completing a line of three 'O' marks.</li>
+              <li style="margin-bottom:8px;"><strong>Declare the Match Outcome</strong>: The game ends instantly when someone achieves three in a row or when all nine spaces are filled. Click "New Game" to reset the board and play again.</li>
+            </ol>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Frequently Asked Questions about Tic Tac Toe</h2>
+            
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Is it possible to win every game of Tic Tac Toe?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">No. If both players employ perfect strategy, Tic Tac Toe is a solved game that will always result in a draw. However, you can win if your opponent makes a tactical error, which is common in casual play.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">How does the AI's "Hard" difficulty work?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">The Hard difficulty uses the minimax search algorithm. It simulates every possible sequence of remaining moves to choose the option that prevents you from winning while maximizing its own chances of victory.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Why is the game called Tic Tac Toe?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">The name originated in the late 19th century. In Britain, it was originally called "Noughts and Crosses." The term "Tic Tac Toe" refers to the sound of writing or marking on a slate, or a slate game popular in the US.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Can I play Tic Tac Toe on mobile devices?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Yes. Our HTML5 implementation is fully responsive, meaning it works seamlessly on smartphones, tablets, and desktop computers without requiring any external app downloads.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What is a "fork" in Tic Tac Toe?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:0;">A fork is a strategic position where a player creates two simultaneous threats of winning lines. Since the opponent can only block one space per turn, a fork guarantees victory on the subsequent turn.</p>
           </article>
         </div>
       </section>
@@ -238,10 +268,14 @@
             <div class="related-thumb" style="background:linear-gradient(135deg,#F59E0B,#EF4444)">🔢</div>
             <div class="related-info"><div class="title">2048</div><div class="cat">Number Puzzle</div></div>
           </a>
-          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Chess">
-            <div class="related-thumb" style="background:linear-gradient(135deg,#1F2937,#6B7280)">♟️</div>
-            <div class="related-info"><div class="title">Chess</div><div class="cat">Strategy</div></div>
-          </div>
+          <a href="/games/sudoku/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#0EA5E9,#6C3CE1)">🔣</div>
+            <div class="related-info"><div class="title">Sudoku</div><div class="cat">Puzzle</div></div>
+          </a>
+          <a href="/games/minesweeper/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#EF4444,#F59E0B)">💣</div>
+            <div class="related-info"><div class="title">Minesweeper</div><div class="cat">Arcade</div></div>
+          </a>
         </div>
 
         <!-- Ad slot -->

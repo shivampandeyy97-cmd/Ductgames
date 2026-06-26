@@ -281,8 +281,38 @@
 
           <!-- SEO -->
           <article style="background:var(--bg-card); border-radius:var(--radius-md); padding:24px; border:1px solid var(--border); width:100%; text-align:left; margin-top:4px;">
-            <h2 style="font-size:1.1rem; font-weight:800; margin-bottom:10px; color:var(--text-main);">About 2048</h2>
-            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8;">2048 is an addictive sliding tile puzzle game. Use your <strong>arrow keys</strong> (or WASD) to slide numbered tiles on a 4×4 grid. When two tiles with the same number collide, they merge into one! Your goal is to reach the <strong>2048 tile</strong>. Features undo, high-score tracking, and mobile swipe support. Free to play — no download, no registration needed.</p>
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:0; margin-bottom:10px; color:var(--text-main);">The Rise, Mathematical Beauty, and Addictive Appeal of 2048</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">In March 2014, 19-year-old Italian developer Gabriele Cirulli created 2048 in a single weekend. Initially designed as a programming exercise and based on existing games like <em>Threes</em> and <em>1024</em>, Cirulli uploaded it to GitHub as free, open-source software. To his amazement, the game went viral almost overnight, racking up over 4 million visitors in less than a week. At its heart, 2048 is a beautiful blend of mathematics and mechanics. The game utilizes powers of two, where players combine matching numbers to form higher denominations: 2, 4, 8, 16, 32, and so on. The visual clean lines, combined with the instant satisfaction of watching numbers double, creates an engaging loop. It challenges the player's spatial awareness, mathematical logic, and planning skills. Because it is easy to learn but exceptionally difficult to master, 2048 continues to captivate millions of casual and hardcore puzzle enthusiasts around the world, proving that simple ideas make the best games.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Strategic Mastery: How to Beat 2048</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px;">Reaching the elusive 2048 tile is not a matter of luck; it requires a strict strategic methodology. The most reliable system is the <strong>corner strategy</strong>. Choose one corner of the board—typically the bottom-left or bottom-right—and vow to keep your highest-value tile locked in that spot throughout the entire game. To support this main tile, you must arrange the remaining tiles in a descending <strong>gradient sequence</strong> along the bottom row. For example, if your corner tile is 1024, the tiles next to it should ideally be 512, 256, and 128. This layout allows for smooth, sequential merging, where a newly created 128 merges into the 128 next to it, triggering a chain reaction that cascades back into your corner tile. Crucially, you must <strong>never swipe up</strong> (or in the direction opposite your designated corner) unless you are absolutely forced to because no other moves exist. Swiping up shifts your high-value tiles out of the corner, allowing a new '2' or '4' tile to spawn underneath, which can permanently block your corner and ruin your game structure. Keep your board clean by merging tiles frequently, keeping the number of active tiles low to maintain maximum sliding maneuverability and prevent grid lock.</p>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Step-by-Step Instructions: How to Play 2048</h2>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Follow these five clear steps to start merging tiles and climbing the scoreboard:</p>
+            <ol style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:16px; padding-left:20px;">
+              <li style="margin-bottom:8px;"><strong>Understand the Grid</strong>: The game board consists of a 4×4 grid. At the start of a new round, two tiles (usually containing the number 2 or 4) are randomly placed on the board.</li>
+              <li style="margin-bottom:8px;"><strong>Slide the Tiles</strong>: Slide the tiles across the grid by using the arrow keys or WASD keys on your computer. If you are playing on a mobile device, swipe in the direction you want to move.</li>
+              <li style="margin-bottom:8px;"><strong>Combine Matching Values</strong>: When two tiles containing identical numbers collide while sliding, they merge into a single tile with a value equal to their sum (e.g., two 4s become an 8).</li>
+              <li style="margin-bottom:8px;"><strong>Utilize the Undo Button</strong>: If you make an accidental move that disrupts your strategy, click the "Undo" button to revert to the previous state. Use this feature to correct tactical mistakes.</li>
+              <li style="margin-bottom:8px;"><strong>Achieve the Target</strong>: Continue sliding and merging tiles until you create a tile valued at 2048. You can stop there or continue for an even higher score.</li>
+            </ol>
+
+            <h2 style="font-size:1.2rem; font-weight:800; margin-top:20px; margin-bottom:10px; color:var(--text-main);">Frequently Asked Questions about 2048</h2>
+            
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What are the odds of a '4' tile spawning instead of a '2'?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">On every turn, a new tile is randomly generated in an empty space on the board. There is a 90% chance it will be a '2' tile, and a 10% chance it will be a '4' tile.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Can I play 2048 offline on my mobile device?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">Yes. Once the HTML5 page is fully loaded in your browser, the game engine runs entirely client-side, meaning you can play without an active internet connection, making it perfect for travel.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">Is 2048 a game of luck or pure skill?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">While the placement of newly spawned tiles has a random element, 2048 is primarily a game of skill. Applying strategic systems, like the corner method, allows skilled players to win consistently.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">How do the undo buttons affect my score?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:12px;">The Undo button reverts your board and score to the state prior to your last move. It does not penalize your score, making it a valuable learning tool for testing strategies.</p>
+
+            <h3 style="font-size:1.0rem; font-weight:700; margin-top:16px; margin-bottom:6px; color:var(--text-main);">What happens after I reach the 2048 tile?</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-bottom:0;">Once you create the 2048 tile, you win the game. However, you can select "Keep Playing" to continue merging tiles to reach 4096, 8192, and beyond to set massive high score records.</p>
           </article>
         </div>
       </section>
@@ -314,10 +344,14 @@
             <div class="related-thumb" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">🃏</div>
             <div class="related-info"><div class="title">Memory Match</div><div class="cat">Card Puzzle</div></div>
           </a>
-          <div class="related-game" onclick="showComingSoon()" role="button" tabindex="0" aria-label="Play Chess">
-            <div class="related-thumb" style="background:linear-gradient(135deg,#1F2937,#6B7280)">♟️</div>
-            <div class="related-info"><div class="title">Chess</div><div class="cat">Strategy</div></div>
-          </div>
+          <a href="/games/sudoku/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#0EA5E9,#6C3CE1)">🔣</div>
+            <div class="related-info"><div class="title">Sudoku</div><div class="cat">Puzzle</div></div>
+          </a>
+          <a href="/games/minesweeper/" class="related-game" style="text-decoration:none;">
+            <div class="related-thumb" style="background:linear-gradient(135deg,#EF4444,#F59E0B)">💣</div>
+            <div class="related-info"><div class="title">Minesweeper</div><div class="cat">Arcade</div></div>
+          </a>
         </div>
 
         <div class="ad-slot" aria-label="Advertisement" style="min-height:250px;">
