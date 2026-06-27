@@ -797,7 +797,7 @@ function runSearchPageResults(q) {
     grid.innerHTML = `<div class="no-results" style="grid-column:1/-1">
       <div class="icon">🔍</div>
       <h3>No results for "${escapeHtml(q)}"</h3>
-      <p>Try searching for Puzzle, Arcade, Snake, Chess, or Tic Tac Toe.</p>
+      <p>Try searching for Puzzle, Arcade, Snake, Sudoku, or Tic Tac Toe.</p>
     </div>`;
     return;
   }
